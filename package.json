@@ -1,0 +1,97 @@
+{
+  "name": "yarn-plugin-conventional-version",
+  "version": "0.0.0",
+  "description": "yarn berry versionning using conventional commits",
+  "keywords": [],
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
+  "license": "ISC",
+  "repository": "https://github.com/christophehurpeau/yarn-plugin-conventional-version.git",
+  "homepage": "https://github.com/christophehurpeau/yarn-plugin-conventional-version",
+  "type": "module",
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0"
+  },
+  "main": "./dist/index-node14.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "node": {
+        "import": "./dist/index-node14.mjs"
+      }
+    }
+  },
+  "module:node": "./dist/index-node14.mjs",
+  "sideEffects": false,
+  "scripts": {
+    "build": "pob-build && yarn run build:definitions",
+    "build:definitions": "tsc -p tsconfig.build.json",
+    "checks": "node scripts/check-package.js",
+    "clean": "rm -Rf dist",
+    "lint": "yarn run lint:prettier && tsc && yarn run lint:eslint",
+    "lint:eslint": "eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet *.{js,cjs,mjs} src",
+    "lint:prettier": "prettier --check .",
+    "postinstallDev": "pob-root-postinstall",
+    "preversion": "yarn run lint && repository-check-dirty",
+    "release": "repository-check-dirty && yarn preversion && standard-version -a -m 'chore(release): %s [skip ci]' && git push --follow-tags origin master && npm publish",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "watch": "pob-watch"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "commitlint": {
+    "extends": [
+      "@pob/commitlint-config"
+    ]
+  },
+  "jest": {
+    "cacheDirectory": "./node_modules/.cache/jest",
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.ts",
+      "<rootDir>/src/**/*.test.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "testEnvironment": "node"
+  },
+  "pob": {
+    "babelEnvs": [
+      {
+        "target": "node",
+        "version": "14",
+        "formats": [
+          "es"
+        ]
+      }
+    ],
+    "entries": [
+      "index"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "7.16.10",
+    "@pob/commitlint-config": "4.1.0",
+    "@pob/eslint-config": "48.0.5",
+    "@pob/eslint-config-typescript": "48.0.6",
+    "@pob/root": "6.5.0",
+    "@types/jest": "27.4.0",
+    "eslint": "8.7.0",
+    "jest": "27.4.7",
+    "pob-babel": "29.8.0",
+    "prettier": "2.5.1",
+    "standard-version": "9.3.2"
+  }
+}
