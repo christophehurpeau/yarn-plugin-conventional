@@ -21,30 +21,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.16.10":
-  version: 7.16.10
-  resolution: "@babel/core@npm:7.16.10"
-  dependencies:
-    "@babel/code-frame": ^7.16.7
-    "@babel/generator": ^7.16.8
-    "@babel/helper-compilation-targets": ^7.16.7
-    "@babel/helper-module-transforms": ^7.16.7
-    "@babel/helpers": ^7.16.7
-    "@babel/parser": ^7.16.10
-    "@babel/template": ^7.16.7
-    "@babel/traverse": ^7.16.10
-    "@babel/types": ^7.16.8
-    convert-source-map: ^1.7.0
-    debug: ^4.1.0
-    gensync: ^1.0.0-beta.2
-    json5: ^2.1.2
-    semver: ^6.3.0
-    source-map: ^0.5.0
-  checksum: d34c5edf9258e620d0cbea4ed25a2615f5ab86dc7f7c1b96ac19817fb7d57bfae9af72dc244385a724225dbc701cb878d9559158aee9659e2a3c69d03f93f3e1
-  languageName: node
-  linkType: hard
-
-"@babel/core@npm:^7.1.0, @babel/core@npm:^7.12.16, @babel/core@npm:^7.12.3, @babel/core@npm:^7.16.5, @babel/core@npm:^7.7.2, @babel/core@npm:^7.8.0":
+"@babel/core@npm:7.16.12, @babel/core@npm:^7.1.0, @babel/core@npm:^7.12.16, @babel/core@npm:^7.12.3, @babel/core@npm:^7.16.5, @babel/core@npm:^7.7.2, @babel/core@npm:^7.8.0":
   version: 7.16.12
   resolution: "@babel/core@npm:7.16.12"
   dependencies:
@@ -7823,7 +7800,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yarn-plugin-conventional-version@workspace:."
   dependencies:
-    "@babel/core": 7.16.10
+    "@babel/core": 7.16.12
     "@pob/commitlint-config": 4.1.0
     "@pob/eslint-config": 48.0.5
     "@pob/eslint-config-typescript": 48.0.6
