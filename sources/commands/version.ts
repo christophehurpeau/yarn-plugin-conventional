@@ -121,9 +121,9 @@ export default class VersionCommand extends BaseCommand {
     description: 'Changelog path. Default to CHANGELOG.md.',
   });
 
-  commitMessage = Option.String('-m,--commit-message', 'chore: release', {
+  commitMessage = Option.String('-m,--commit-message', 'chore: release\n\n%t', {
     description:
-      'Commit message. Default to "chore: release". You can use %v for the version and %s for the version with prefix.',
+      'Commit message. Default to "chore: release". You can use %v for the version, %s for the version with prefix, %t to list tags.',
   });
 
   createRelease = Option.String('--create-release', {
@@ -616,10 +616,14 @@ export default class VersionCommand extends BaseCommand {
           report.reportSeparator();
           report.reportInfo(MessageName.UNNAMED, 'Commit, tag and push');
 
+          const tagsSet = new Set<string>(
+            [...bumpedWorkspaces.values()].map(({ newTag }) => newTag),
+          );
+
           const message = this.commitMessage
             .replace(/%s/g, rootNewTag)
-            .replace(/%v/g, rootNewVersion);
-
+            .replace(/%v/g, rootNewVersion)
+            .replace(/%t/g, [...tagsSet].map((tag) => `- ${tag}`).join('\n'));
           await createGitCommit(rootWorkspace, message);
 
           for (const [workspace, { newTag }] of bumpedWorkspaces.entries()) {
