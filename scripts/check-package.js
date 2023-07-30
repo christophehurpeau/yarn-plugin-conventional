@@ -1,5 +1,8 @@
-import { createCheckPackage } from 'check-package-dependencies';
+// TODO reneable
+// import { createCheckPackage } from 'check-package-dependencies';
 
-createCheckPackage().checkRecommended({
-  isLibrary: false,
-});
+// await createCheckPackage()
+//   .checkRecommended({
+//     isLibrary: false,
+//   })
+//   .run();

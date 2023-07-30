@@ -9,7 +9,7 @@
       "enable": true
     },
     "app": {
-      "type": "node",
+      "type": "yarn-plugin",
       "testing": true,
       "ci": true,
       "codecov": true

@@ -6,20 +6,14 @@
   yarn berry versionning using conventional commits
 </p>
 
-<p align="center">
-  <a href="https://npmjs.org/package/yarn-plugin-conventional-version"><img src="https://img.shields.io/npm/v/yarn-plugin-conventional-version.svg?style=flat-square"></a>
-</p>
-
 ## Install
 
 ```bash
-npm install --save yarn-plugin-conventional-version
+yarn plugin import https://raw.githubusercontent.com/christophehurpeau/yarn-plugin-conventional-version/main/bundles/plugin-conventional-version.cjs
 ```
 
 ## Usage
 
-```js
-import yarnPluginConventionalVersion from 'yarn-plugin-conventional-version';
-
-console.log(yarnPluginConventionalVersion);
+```bash
+yarn version --help
 ```
