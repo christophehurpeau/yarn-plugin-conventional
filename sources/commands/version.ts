@@ -621,6 +621,7 @@ export default class VersionCommand extends BaseCommand {
           );
 
           const message = this.commitMessage
+            .replace(/\\n/g, '\n')
             .replace(/%s/g, rootNewTag)
             .replace(/%v/g, rootNewVersion)
             .replace(/%t/g, [...tagsSet].map((tag) => `- ${tag}`).join('\n'));
