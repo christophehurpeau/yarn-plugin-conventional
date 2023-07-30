@@ -360,6 +360,11 @@ export default class VersionCommand extends BaseCommand {
           }
         }
 
+        if (changedWorkspaces.size === 0) {
+          report.reportInfo(MessageName.UNNAMED, 'No changed workspaces');
+          return 0;
+        }
+
         report.reportInfo(MessageName.UNNAMED, 'Preparing bumping');
 
         const bumpedWorkspaces = new Map<Workspace, BumpedWorkspace>();
