@@ -9,7 +9,7 @@
 ## Install
 
 ```bash
-yarn plugin import https://raw.githubusercontent.com/christophehurpeau/yarn-plugin-conventional-version/main/bundles/plugin-conventional-version.cjs
+yarn plugin import https://raw.githubusercontent.com/christophehurpeau/yarn-plugin-conventional-version/main/bundles/@yarnpkg/plugin-conventional-version.cjs
 ```
 
 ## Usage
