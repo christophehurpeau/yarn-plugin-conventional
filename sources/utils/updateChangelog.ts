@@ -13,9 +13,13 @@ const CHANGELOG_HEADER = [
 
 export const updateChangelogFile = async (
   versionChangelogContent: string,
+  tagPrefix: string,
   file = 'CHANGELOG.md',
 ): Promise<void> => {
-  const START_OF_LAST_RELEASE_PATTERN = /(^#+ \[?\d+\.\d+\.\d+|<a name=)/m;
+  const START_OF_LAST_RELEASE_PATTERN = new RegExp(
+    `(^#+ \\[?(?:${tagPrefix})?\\d+\\.\\d+\\.\\d+|<a name=)`,
+    'm',
+  );
 
   let oldContent = '';
 

@@ -68,7 +68,7 @@ export const recommendBump = (
 export const generateChangelog = async (
   config: ConventionalCommitsConfig,
   newVersion: string,
-  newTag: string,
+  newTag: string | null,
   {
     previousTag = '',
     verbose = false,
@@ -88,10 +88,13 @@ export const generateChangelog = async (
           : undefined,
         config,
         tagPrefix,
+        version: newVersion,
+        currentTag: newTag === null ? undefined : newTag,
+        // TODO config types
       },
       {
         version: newVersion,
-        currentTag: newTag,
+        currentTag: newTag === null ? undefined : newTag,
         previousTag,
       },
       { merges: null, path },

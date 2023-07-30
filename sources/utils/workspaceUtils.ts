@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import type {
   AllDependencies as DependencyType,
   Descriptor,
@@ -95,6 +96,11 @@ export const buildTopologicalOrderBatches = (
   while (toAdd.size > 0) {
     const batch = new Set<Workspace>();
     for (const workspace of toAdd) {
+      // make sure top level workspace is always in the last batch
+      if (workspace === project.topLevelWorkspace && toAdd.size > 1) {
+        continue;
+      }
+
       const dependencies = dependenciesMap.get(workspace);
       if (!dependencies || dependencies.every((w) => added.has(w[0]))) {
         batch.add(workspace);

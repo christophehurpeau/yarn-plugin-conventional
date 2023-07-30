@@ -50,21 +50,6 @@ describe('version', () => {
     expect(stderr).toBeFalsy();
   });
 
-  it('should fail if monorepo with fixed version', async () => {
-    const { exitCode, stdout, stderr } = await executeCommand(
-      'version',
-      ['--dry-run'],
-      {
-        cwd: new URL('../__fixtures__/monorepo', import.meta.url),
-      },
-    );
-    expect(exitCode).toBe(1);
-    expect(stdout).toContain(
-      'Monorepo with fixed version is not supported yet.',
-    ); // replace with expected output
-    expect(stderr).toBeFalsy();
-  });
-
   it('should fail if --prerelease is passed', async () => {
     const { exitCode, stdout, stderr } = await executeCommand(
       'version',

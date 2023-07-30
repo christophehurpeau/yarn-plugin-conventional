@@ -37,7 +37,6 @@ import {
   generateChangelog,
 } from '../utils/conventionalChangelogUtils';
 import { loadConventionalCommitConfig } from '../utils/conventionalCommitConfigUtils';
-import { execCommand } from '../utils/execCommand';
 import {
   createGitCommit,
   createGitTag,
@@ -67,7 +66,8 @@ interface BumpedWorkspace extends ChangedWorkspace {
   hasChanged: boolean;
   currentVersion: string;
   newVersion: string;
-  newTag: string;
+  newTag: string | null;
+  // for legacy configuration not using workspaces ranges https://yarnpkg.com/features/workspaces#workspace-ranges-workspace
   dependenciesToBump: [DependencyType, Descriptor, string][];
 }
 
@@ -123,7 +123,7 @@ export default class VersionCommand extends BaseCommand {
 
   commitMessage = Option.String('-m,--commit-message', 'chore: release\n\n%t', {
     description:
-      'Commit message. Default to "chore: release". You can use %v for the version, %s for the version with prefix, %t to list tags.',
+      'Commit message. Default to "chore: release %a". You can use %v for the version, %s for the version with prefix, %t to list tags, %a for auto best display.',
   });
 
   createRelease = Option.String('--create-release', {
@@ -155,10 +155,6 @@ export default class VersionCommand extends BaseCommand {
 
   // yes = Option.Boolean('-y,--yes', !!process.env.CI, {
   //   description: 'Skip all confirmations',
-  // });
-
-  // recursive = Option.Boolean('-R,--recursive', {
-  //   description: 'Bump version on transitive workspaces as well',
   // });
 
   async execute(): Promise<number> {
@@ -206,10 +202,6 @@ export default class VersionCommand extends BaseCommand {
       throw new UsageError('--prerelease is not supported yet.');
     }
 
-    if (isMonorepo && !isMonorepoVersionIndependent) {
-      throw new UsageError('Monorepo with fixed version is not supported yet.');
-    }
-
     const rootTagsPromise = this.force
       ? null
       : getGitSemverTags({
@@ -233,7 +225,9 @@ export default class VersionCommand extends BaseCommand {
 
     const buildTagName = (workspace: Workspace, version: string): string =>
       `${
-        isMonorepo ? `${getWorkspaceName(workspace)}@` : this.tagPrefix
+        isMonorepo && workspace !== rootWorkspace
+          ? `${getWorkspaceName(workspace)}@`
+          : this.tagPrefix
       }${version}`;
 
     const applyReport = await StreamReport.start(
@@ -242,7 +236,7 @@ export default class VersionCommand extends BaseCommand {
         json: this.json,
         stdout: this.context.stdout,
       },
-      async (report) => {
+      async (report): Promise<number> => {
         const changedWorkspaces = new Map<Workspace, ChangedWorkspace>();
         const previousTags = new Map<Workspace, string>();
         const dependenciesMap = isMonorepo
@@ -258,8 +252,15 @@ export default class VersionCommand extends BaseCommand {
           const isRoot = workspace === rootWorkspace;
           const version = workspace.manifest.version;
 
+          if (isRoot && isMonorepo) {
+            continue;
+          }
+
           if (!version || version === '0.0.0') {
-            if (isRoot && !isMonorepo) {
+            if (
+              (isRoot || isMonorepoVersionIndependent) &&
+              (!isMonorepo || !isMonorepoVersionIndependent)
+            ) {
               throw new UsageError(
                 'package.json has no version in its manifest. For the first release, set to "1.0.0-pre" or "0.1.0-pre".',
               );
@@ -272,19 +273,6 @@ export default class VersionCommand extends BaseCommand {
             continue;
           }
 
-          if (isMonorepo && isRoot) {
-            throw new UsageError(
-              'monorepo with fixed version is not supported yet.',
-            );
-          }
-
-          // TODO handle independent vs fixed mode:
-          /*   if (type === "independent") {
-      options.lernaPackage = pkg.name;
-    } else {
-      // only fixed mode can have a custom tag prefix
-      options.tagPrefix = tagPrefix;
-    }*/
           const packageOption =
             isMonorepo && isMonorepoVersionIndependent
               ? workspaceName
@@ -479,29 +467,35 @@ export default class VersionCommand extends BaseCommand {
                 rootNewTag = tagName;
               }
 
-              const bumpReason = bumpReasons.join('\n');
-              bumpedWorkspaces.set(workspace, {
-                currentVersion,
-                bumpType,
-                bumpReason,
-                newVersion,
-                newTag: tagName,
-                hasChanged: changedWorkspace !== undefined,
-                dependenciesToBump,
-              });
+              if (workspace !== rootWorkspace || !isMonorepo) {
+                const bumpReason = bumpReasons.join('\n');
+                bumpedWorkspaces.set(workspace, {
+                  currentVersion,
+                  bumpType,
+                  bumpReason,
+                  newVersion,
+                  newTag: tagName,
+                  hasChanged: changedWorkspace !== undefined,
+                  dependenciesToBump,
+                });
 
-              report.reportInfo(
-                MessageName.UNNAMED,
-                `${workspaceName}: ${currentVersion} -> ${newVersion} (${bumpReason})`,
-              );
-              report.reportJson({
-                cwd: npath.fromPortablePath(workspace.cwd),
-                ident: workspaceName,
-                oldVersion: currentVersion,
-                newVersion,
-                bumpType,
-                bumpReasons,
-              });
+                report.reportInfo(
+                  MessageName.UNNAMED,
+                  `${workspaceName}: ${currentVersion} -> ${
+                    !isMonorepo || isMonorepoVersionIndependent
+                      ? newVersion
+                      : 'bump'
+                  } (${bumpReason})`,
+                );
+                report.reportJson({
+                  cwd: npath.fromPortablePath(workspace.cwd),
+                  ident: workspaceName,
+                  oldVersion: currentVersion,
+                  ...(isMonorepoVersionIndependent ? { newVersion } : {}),
+                  bumpType,
+                  bumpReasons,
+                });
+              }
             }
           }
         }
@@ -510,7 +504,61 @@ export default class VersionCommand extends BaseCommand {
         // if (!this.yes) {
         // }
 
+        // TODO do this entire phase here, not override for not independent only
+        if (isMonorepo && !isMonorepoVersionIndependent) {
+          const currentVersion = rootWorkspace.manifest.version!;
+          const highestBumpType = getHighestBumpType(
+            [...bumpedWorkspaces.values()].map(({ bumpType }) => bumpType),
+          );
+          const newVersion = incrementVersion(
+            rootWorkspace,
+            currentVersion,
+            highestBumpType,
+          );
+          rootNewVersion = newVersion;
+          rootNewTag = buildTagName(rootWorkspace, newVersion);
+
+          [...bumpedWorkspaces.entries()].forEach(
+            ([workspace, bumpedWorkspace]) => {
+              const isRoot = workspace === rootWorkspace;
+              if (isRoot) {
+                throw new Error('Unexpected root found in bumped workspaces');
+              }
+              bumpedWorkspace.bumpType = highestBumpType;
+              bumpedWorkspace.newVersion = newVersion;
+              bumpedWorkspace.newTag = isRoot ? rootNewTag : null;
+            },
+          );
+
+          bumpedWorkspaces.set(rootWorkspace, {
+            currentVersion,
+            bumpType: highestBumpType,
+            hasChanged: true,
+            newVersion: rootNewVersion,
+            newTag: rootNewTag,
+            dependenciesToBump: [],
+          });
+
+          report.reportInfo(
+            MessageName.UNNAMED,
+            `${currentVersion} -> ${newVersion}`,
+          );
+          report.reportJson({
+            oldVersion: currentVersion,
+            newVersion,
+          });
+        }
+
         // do modifications
+
+        if (isMonorepoVersionIndependent) {
+          await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
+            rootWorkspace,
+            'preversion',
+            { cwd: rootWorkspace.cwd, report },
+          );
+        }
+
         await Promise.all(
           [...bumpedWorkspaces.entries()].map(
             async ([workspace, { newVersion, dependenciesToBump }]) => {
@@ -548,6 +596,14 @@ export default class VersionCommand extends BaseCommand {
           ),
         );
 
+        if (isMonorepoVersionIndependent) {
+          await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
+            rootWorkspace,
+            'version',
+            { cwd: rootWorkspace.cwd, report },
+          );
+        }
+
         const changelogs = new Map<Workspace, string>();
 
         await Promise.all(
@@ -568,7 +624,7 @@ export default class VersionCommand extends BaseCommand {
                 newTag,
                 {
                   lernaPackage:
-                    rootWorkspace === workspace
+                    rootWorkspace === workspace || !isMonorepoVersionIndependent
                       ? undefined
                       : getWorkspaceName(workspace),
                   path: workspaceRelativePath,
@@ -578,7 +634,7 @@ export default class VersionCommand extends BaseCommand {
                 },
               );
 
-              if (!hasChanged && bumpReason) {
+              if (!hasChanged && bumpReason && workspace !== rootWorkspace) {
                 changelog += `${bumpReason}\n\n`;
               }
 
@@ -595,6 +651,7 @@ export default class VersionCommand extends BaseCommand {
                 } else {
                   await updateChangelogFile(
                     changelog,
+                    this.tagPrefix,
                     `${workspace.cwd}/${this.changelogFile}`,
                   );
                 }
@@ -617,17 +674,29 @@ export default class VersionCommand extends BaseCommand {
           report.reportInfo(MessageName.UNNAMED, 'Commit, tag and push');
 
           const tagsSet = new Set<string>(
-            [...bumpedWorkspaces.values()].map(({ newTag }) => newTag),
+            [...bumpedWorkspaces.values()]
+              .map(({ newTag }) => newTag)
+              .filter((newTag) => newTag !== null) as string[],
           );
 
+          const tagsInCommitMessage = [...tagsSet]
+            .map((tag) => `- ${tag}`)
+            .join('\n');
           const message = this.commitMessage
             .replace(/\\n/g, '\n')
+            .replace(
+              /%a/g,
+              isMonorepoVersionIndependent
+                ? `\n\n${tagsInCommitMessage}`
+                : rootNewVersion,
+            )
             .replace(/%s/g, rootNewTag)
             .replace(/%v/g, rootNewVersion)
-            .replace(/%t/g, [...tagsSet].map((tag) => `- ${tag}`).join('\n'));
+            .replace(/%t/g, tagsInCommitMessage);
           await createGitCommit(rootWorkspace, message);
 
           for (const [workspace, { newTag }] of bumpedWorkspaces.entries()) {
+            if (newTag === null) continue;
             await createGitTag(workspace, newTag);
           }
 
@@ -662,22 +731,29 @@ export default class VersionCommand extends BaseCommand {
 
             await Promise.all(
               [...bumpedWorkspaces.entries()].map(([workspace, { newTag }]) => {
+                if (newTag === null) return;
                 const changelog = changelogs.get(workspace);
-                return (
-                  changelog &&
-                  createGitRelease(
-                    githubClient,
-                    parsedRepoUrl,
-                    newTag,
-                    changelog,
-                    !!this.prerelease,
-                  )
+                if (!changelog) {
+                  report.reportWarning(
+                    MessageName.UNNAMED,
+                    `No changelog found for workspace: ${getWorkspaceName(
+                      workspace,
+                    )}`,
+                  );
+                  return;
+                }
+                return createGitRelease(
+                  githubClient,
+                  parsedRepoUrl,
+                  newTag,
+                  changelog,
+                  !!this.prerelease,
                 );
               }),
             );
           }
-          return 0;
         }
+        return 0;
       },
     );
 
