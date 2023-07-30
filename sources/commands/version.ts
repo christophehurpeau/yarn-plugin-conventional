@@ -579,7 +579,7 @@ export default class VersionCommand extends BaseCommand {
               );
 
               if (!hasChanged && bumpReason) {
-                changelog += `\n\n${bumpReason}`;
+                changelog += `${bumpReason}\n\n`;
               }
 
               changelogs.set(workspace, changelog);
