@@ -78,7 +78,7 @@
     "@yarnpkg/shell": "3.2.5",
     "clipanion": "3.2.0-rc.4",
     "conventional-changelog-conventionalcommits": "6.1.0",
-    "conventional-changelog-core": "5.0.2",
+    "conventional-changelog-core": "6.0.0",
     "conventional-recommended-bump": "7.0.1",
     "semver": "7.5.4",
     "typanion": "3.13.0"
