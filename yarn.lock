@@ -3248,6 +3248,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"conventional-changelog-conventionalcommits@npm:7.0.2":
+  version: 7.0.2
+  resolution: "conventional-changelog-conventionalcommits@npm:7.0.2"
+  dependencies:
+    compare-func: ^2.0.0
+  checksum: e17ac5970ae09d6e9b0c3a7edaed075b836c0c09c34c514589cbe06554f46ed525067fa8150a8467cc03b1cf9af2073e7ecf48790d4f5ea399921b1cbe313711
+  languageName: node
+  linkType: hard
+
 "conventional-changelog-conventionalcommits@patch:conventional-changelog-conventionalcommits@npm%3A6.1.0#./.yarn/patches/conventional-changelog-conventionalcommits-npm-6.1.0-10dd027396.patch::locator=yarn-plugin-conventional-version%40workspace%3A.":
   version: 6.1.0
   resolution: "conventional-changelog-conventionalcommits@patch:conventional-changelog-conventionalcommits@npm%3A6.1.0#./.yarn/patches/conventional-changelog-conventionalcommits-npm-6.1.0-10dd027396.patch::version=6.1.0&hash=3b1573&locator=yarn-plugin-conventional-version%40workspace%3A."
@@ -8921,7 +8930,7 @@ __metadata:
     "@yarnpkg/shell": 3.2.5
     check-package-dependencies: 6.7.0
     clipanion: 3.2.0-rc.4
-    conventional-changelog-conventionalcommits: 6.1.0
+    conventional-changelog-conventionalcommits: 7.0.2
     conventional-changelog-core: 5.0.2
     conventional-recommended-bump: 7.0.1
     eslint: 8.45.0
