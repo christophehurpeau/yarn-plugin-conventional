@@ -353,18 +353,6 @@ export default class VersionCommand extends BaseCommand {
           return 0;
         }
 
-        if (
-          isMonorepo &&
-          !isMonorepoVersionIndependent &&
-          !changedWorkspaces.has(rootWorkspace)
-        ) {
-          throw new Error(
-            `Invalid root workspace "${getWorkspaceName(
-              rootWorkspace,
-            )}" no changes but others workspaces has changed`,
-          );
-        }
-
         report.reportInfo(MessageName.UNNAMED, 'Preparing bumping');
 
         const bumpedWorkspaces = new Map<Workspace, BumpedWorkspace>();
