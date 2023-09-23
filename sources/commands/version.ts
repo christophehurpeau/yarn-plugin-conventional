@@ -485,7 +485,7 @@ export default class VersionCommand extends BaseCommand {
                     !isMonorepo || isMonorepoVersionIndependent
                       ? newVersion
                       : 'bump'
-                  } (${bumpReason})`,
+                  } (${bumpReason.replace('\n', ' ; ')})`,
                 );
                 report.reportJson({
                   cwd: npath.fromPortablePath(workspace.cwd),
