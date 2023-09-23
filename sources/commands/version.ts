@@ -63,6 +63,7 @@ interface ChangedWorkspace {
 }
 
 interface BumpedWorkspace extends ChangedWorkspace {
+  bumpForDependenciesReasons?: string[];
   hasChanged: boolean;
   currentVersion: string;
   newVersion: string;
@@ -445,20 +446,14 @@ export default class VersionCommand extends BaseCommand {
                 `${workspaceName}: skipped (no version)`,
               );
             } else if (!bumpType) {
-              if (
-                isMonorepo &&
-                !isMonorepoVersionIndependent &&
-                workspace === rootWorkspace
-              ) {
-                report.reportInfo(
-                  MessageName.UNNAMED,
-                  `${workspaceName}: skipped (${
-                    changedWorkspace
-                      ? `no bump recommended by ${this.preset}`
-                      : 'no changes'
-                  })`,
-                );
-              }
+              report.reportInfo(
+                MessageName.UNNAMED,
+                `${workspaceName}: skipped (${
+                  changedWorkspace
+                    ? `no bump recommended by ${this.preset}`
+                    : 'no changes'
+                })`,
+              );
             } else {
               const newVersion = incrementVersion(
                 workspace,
@@ -479,6 +474,7 @@ export default class VersionCommand extends BaseCommand {
                   currentVersion,
                   bumpType,
                   bumpReason,
+                  bumpForDependenciesReasons: bumpReasons.slice(1),
                   newVersion,
                   newTag: tagName,
                   hasChanged: changedWorkspace !== undefined,
@@ -616,7 +612,13 @@ export default class VersionCommand extends BaseCommand {
           [...bumpedWorkspaces.entries()].map(
             async ([
               workspace,
-              { newVersion, newTag, hasChanged, bumpReason },
+              {
+                newVersion,
+                newTag,
+                hasChanged,
+                bumpReason,
+                bumpForDependenciesReasons,
+              },
             ]) => {
               const workspaceRelativePath =
                 rootWorkspace === workspace
@@ -640,14 +642,14 @@ export default class VersionCommand extends BaseCommand {
                 },
               );
 
-              if (!hasChanged && bumpReason && workspace !== rootWorkspace) {
-                changelog += `${bumpReason}\n\n`;
-              }
-
               if (
                 changelog.slice(changelog.indexOf('\n')).trim().length === 0
               ) {
                 changelog += 'Note: no notable changes\n\n';
+              }
+
+              if (bumpForDependenciesReasons && workspace !== rootWorkspace) {
+                changelog += `${bumpForDependenciesReasons.join('\n')}\n\n`;
               }
 
               changelogs.set(workspace, changelog);
