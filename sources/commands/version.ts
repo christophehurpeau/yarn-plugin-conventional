@@ -656,7 +656,9 @@ export default class VersionCommand extends BaseCommand {
                 changelog += `${bumpReason}\n\n`;
               }
 
-              if (changelog.slice(1).trim().length === 0) {
+              if (
+                changelog.slice(changelog.indexOf('\n')).trim().length === 0
+              ) {
                 changelog += 'Note: no notable changes\n\n';
               }
 
