@@ -638,6 +638,10 @@ export default class VersionCommand extends BaseCommand {
                 changelog += `${bumpReason}\n\n`;
               }
 
+              if (changelog.slice(1).trim().length === 0) {
+                changelog += 'Note: no notable changes\n\n';
+              }
+
               changelogs.set(workspace, changelog);
 
               if (this.changelogFile) {
