@@ -122,7 +122,7 @@ export default class VersionCommand extends BaseCommand {
     description: 'Changelog path. Default to CHANGELOG.md.',
   });
 
-  commitMessage = Option.String('-m,--commit-message', 'chore: release\n\n%t', {
+  commitMessage = Option.String('-m,--commit-message', 'chore: release %a', {
     description:
       'Commit message. Default to "chore: release %a". You can use %v for the version, %s for the version with prefix, %t to list tags, %a for auto best display.',
   });
