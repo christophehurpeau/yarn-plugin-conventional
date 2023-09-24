@@ -528,7 +528,14 @@ export default class VersionCommand extends BaseCommand {
               }
               bumpedWorkspace.bumpType = highestBumpType;
               bumpedWorkspace.newVersion = newVersion;
-              bumpedWorkspace.newTag = isRoot ? rootNewTag : null;
+              bumpedWorkspace.newTag = null;
+              bumpedWorkspace.dependenciesToBump.forEach((dependencyToBump) => {
+                dependencyToBump[2] = calcBumpRange(
+                  workspace,
+                  dependencyToBump[1].range,
+                  newVersion,
+                );
+              });
             },
           );
 

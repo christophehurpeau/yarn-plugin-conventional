@@ -1,4 +1,5 @@
-import { WorkspaceResolver, type Workspace } from '@yarnpkg/core';
+import type { Workspace } from '@yarnpkg/core';
+import { WorkspaceResolver } from '@yarnpkg/core';
 import { UsageError } from 'clipanion';
 import semver from 'semver';
 import { getWorkspaceName } from './workspaceUtils';
