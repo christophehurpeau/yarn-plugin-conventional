@@ -31,7 +31,7 @@ import {
   incrementVersion,
 } from '../utils/bumpTypeUtils';
 import {
-  getCommits,
+  getParsedCommits,
   getGitSemverTags,
   recommendBump,
   generateChangelog,
@@ -152,6 +152,11 @@ export default class VersionCommand extends BaseCommand {
 
   gitRemote = Option.String('--git-remote', 'origin', {
     description: 'Git remote to push commits and tags to',
+  });
+
+  ignoreChanges = Option.Array('--ignore-changes', {
+    description:
+      'Ignore changes in files matching the glob. Example: "**/*.test.js"',
   });
 
   // yes = Option.Boolean('-y,--yes', !!process.env.CI, {
@@ -303,11 +308,16 @@ export default class VersionCommand extends BaseCommand {
               workspace.cwd,
             );
 
-            const commits = await getCommits(conventionalCommitConfig, {
-              format: '%B%n-hash-%n%H',
-              from: previousTag,
-              path: workspaceRelativePath,
-            });
+            const commits = await getParsedCommits(
+              workspace,
+              conventionalCommitConfig,
+              {
+                format: '%B%n-hash-%n%H',
+                from: previousTag,
+                path: workspaceRelativePath,
+                ignoreChanges: this.ignoreChanges,
+              },
+            );
 
             // No changes found for this package
             if (commits.length === 0) {

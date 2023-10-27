@@ -1,12 +1,14 @@
 import { promisify } from 'node:util';
-import concat from 'concat-stream';
+// import concat from 'concat-stream';
+import type { Workspace } from '@yarnpkg/core';
 import conventionalChangelog from 'conventional-changelog-core';
 import conventionalCommitsFilter from 'conventional-commits-filter';
 import conventionalCommitsParser from 'conventional-commits-parser';
-import type { Callback } from 'conventional-recommended-bump';
-import gitRawCommits from 'git-raw-commits';
+import type { Callback } from '@types/conventional-recommended-bump';
 import gitSemverTags from 'git-semver-tags';
 import type { ConventionalCommitsConfig } from './conventionalCommitConfigUtils';
+import type { GetCommitsOptions } from './gitUtils';
+import { getCommits as getRawCommits } from './gitUtils';
 
 // const gitRoot = await gitUtils.fetchRoot(
 //   project.configuration.projectCwd,
@@ -23,9 +25,10 @@ import type { ConventionalCommitsConfig } from './conventionalCommitConfigUtils'
 
 export const getGitSemverTags = promisify(gitSemverTags);
 
-export const getCommits = (
+export const getParsedCommits = async (
+  workspace: Workspace,
   config: ConventionalCommitsConfig,
-  options: gitRawCommits.GitOptions,
+  gitRawCommitsOptions: GetCommitsOptions,
 ): Promise<conventionalCommitsParser.Commit[]> => {
   const parserOpts: conventionalCommitsParser.Options =
     config.recommendedBumpOpts?.parserOpts ?? config.parserOpts;
@@ -34,19 +37,12 @@ export const getCommits = (
     throw new Error('Invalid parser options');
   }
 
-  return new Promise((resolve) => {
-    // TODO use yarn to get commits, not this lib
-    // TODO filter commits based on ignore paths
-    // TODO filter commits based on dev dependencies modifications in package.json
-    gitRawCommits(options)
-      .pipe(conventionalCommitsParser(parserOpts))
-      .pipe(
-        concat((data: any) => {
-          const filteredCommits = conventionalCommitsFilter(data);
-          resolve(filteredCommits);
-        }),
-      );
-  });
+  const commits = await getRawCommits(workspace, gitRawCommitsOptions);
+  const parsedCommits = commits.map((commit) =>
+    conventionalCommitsParser.sync(commit, parserOpts),
+  );
+  // this filters reverted commits from the list
+  return conventionalCommitsFilter(parsedCommits);
 };
 
 const versions = ['major', 'minor', 'patch'];
