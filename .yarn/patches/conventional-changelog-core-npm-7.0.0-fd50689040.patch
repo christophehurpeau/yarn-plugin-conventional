@@ -1,0 +1,27 @@
+diff --git a/lib/merge-config.js b/lib/merge-config.js
+index 01a098ca3a65e9aae92280560a6eb85e515fde1f..d8469e8582cb5d63a0a88d217cc34505a5ca9ef5 100644
+--- a/lib/merge-config.js
++++ b/lib/merge-config.js
+@@ -6,6 +6,13 @@ const parseRepositoryUrl = require('@hutson/parse-repository-url')
+ const gitSemverTags = require('git-semver-tags')
+ const normalizePackageData = require('normalize-package-data')
+ 
++
++const hosts = {
++  github: require('../hosts/github'),
++  bitbucket: require('../hosts/bitbucket'),
++  gitlab: require('../hosts/gitlab')
++}
++
+ const { URL } = require('url')
+ 
+ const rhosts = /github|bitbucket|gitlab/i
+@@ -255,7 +262,7 @@ async function mergeConfig (options, context, gitRawCommitsOpts, parserOpts, wri
+     }
+ 
+     if (type) {
+-      hostOpts = require('../hosts/' + type)
++      hostOpts = hosts[type];
+ 
+       context = {
+         issue: hostOpts.issue,

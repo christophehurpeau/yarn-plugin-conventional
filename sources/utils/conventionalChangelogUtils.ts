@@ -1,12 +1,10 @@
-import { promisify } from 'node:util';
 // import concat from 'concat-stream';
+import type { Callback } from '@types/conventional-recommended-bump';
 import type { Workspace } from '@yarnpkg/core';
 import conventionalChangelog from 'conventional-changelog-core';
 import conventionalCommitsFilter from 'conventional-commits-filter';
 import conventionalCommitsParser from 'conventional-commits-parser';
-import type { Callback } from '@types/conventional-recommended-bump';
-import gitSemverTags from 'git-semver-tags';
-import type { ConventionalCommitsConfig } from './conventionalCommitConfigUtils';
+import type { ConventionalChangelogConfig } from './conventionalCommitConfigUtils';
 import type { GetCommitsOptions } from './gitUtils';
 import { getCommits as getRawCommits } from './gitUtils';
 
@@ -23,11 +21,9 @@ import { getCommits as getRawCommits } from './gitUtils';
 // });
 // console.log({ changedFiles });
 
-export const getGitSemverTags = promisify(gitSemverTags);
-
 export const getParsedCommits = async (
   workspace: Workspace,
-  config: ConventionalCommitsConfig,
+  config: ConventionalChangelogConfig,
   gitRawCommitsOptions: GetCommitsOptions,
 ): Promise<conventionalCommitsParser.Commit[]> => {
   const parserOpts: conventionalCommitsParser.Options =
@@ -48,7 +44,7 @@ export const getParsedCommits = async (
 const versions = ['major', 'minor', 'patch'];
 export const recommendBump = (
   commits: conventionalCommitsParser.Commit[],
-  config: ConventionalCommitsConfig,
+  config: ConventionalChangelogConfig,
 ): Callback.Recommendation => {
   const whatBump = config.recommendedBumpOpts.whatBump;
   let result = whatBump(commits);
@@ -62,7 +58,7 @@ export const recommendBump = (
 };
 
 export const generateChangelog = async (
-  config: ConventionalCommitsConfig,
+  config: ConventionalChangelogConfig,
   newVersion: string,
   newTag: string | null,
   {
@@ -107,3 +103,5 @@ export const generateChangelog = async (
     });
   });
 };
+
+export { default as getGitSemverTags } from 'git-semver-tags';

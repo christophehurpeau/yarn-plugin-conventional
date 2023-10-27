@@ -1,0 +1,102 @@
+diff --git a/templates/commit.hbs b/templates/commit.hbs
+index 641c2f377774274d6854208ad90d02574565dde0..aa828180b4039caec19100a78e3f43f00df6de85 100644
+--- a/templates/commit.hbs
++++ b/templates/commit.hbs
+@@ -27,4 +27,3 @@
+     {{~this.repository}}{{this.prefix}}{{this.issue}}
+   {{~/if}}{{/each}}
+ {{~/if}}
+-
+diff --git a/writerOpts.js b/writerOpts.js
+index ee05de96c016cb75bc357b5ea0839cd55e58a88a..5b969074bacc34d843f627a9f4860dce2bac6a83 100644
+--- a/writerOpts.js
++++ b/writerOpts.js
+@@ -1,8 +1,6 @@
+ 'use strict'
+ 
+ const compareFunc = require('compare-func')
+-const { readFile } = require('fs').promises
+-const { resolve } = require('path')
+ const { DEFAULT_COMMIT_TYPES } = require('./constants')
+ const { addBangNotes } = require('./utils')
+ 
+@@ -47,12 +45,73 @@ async function createWriterOpts (config) {
+     header,
+     commit,
+     footer
+-  ] = await Promise.all([
+-    readFile(resolve(__dirname, './templates/template.hbs'), 'utf-8'),
+-    readFile(resolve(__dirname, './templates/header.hbs'), 'utf-8'),
+-    readFile(resolve(__dirname, './templates/commit.hbs'), 'utf-8'),
+-    readFile(resolve(__dirname, './templates/footer.hbs'), 'utf-8')
+-  ])
++  ] = [
++`{{> header}}
++
++{{#if noteGroups}}
++{{#each noteGroups}}
++
++### ⚠ {{title}}
++
++{{#each notes}}
++* {{#if commit.scope}}**{{commit.scope}}:** {{/if}}{{text}}
++{{/each}}
++{{/each}}
++{{/if}}
++{{#each commitGroups}}
++
++{{#if title}}
++### {{title}}
++
++{{/if}}
++{{#each commits}}
++{{> commit root=@root}}
++{{/each}}
++
++{{/each}}
++`,
++`## {{#if @root.linkCompare~}}
++[{{version}}]({{compareUrlFormat}})
++{{~else}}
++{{~version}}
++{{~/if}}
++{{~#if title}} "{{title}}"
++{{~/if}}
++{{~#if date}} ({{date}})
++{{/if}}
++`,
++`*{{#if scope}} **{{scope}}:**
++{{~/if}} {{#if subject}}
++  {{~subject}}
++{{~else}}
++  {{~header}}
++{{~/if}}
++
++{{~!-- commit link --}}{{~#if hash}} {{#if @root.linkReferences~}}
++  ([{{shortHash}}]({{commitUrlFormat}}))
++{{~else}}
++  {{~shortHash}}
++{{~/if}}{{~/if}}
++
++{{~!-- commit references --}}
++{{~#if references~}}
++  , closes
++  {{~#each references}} {{#if @root.linkReferences~}}
++    [
++    {{~#if this.owner}}
++      {{~this.owner}}/
++    {{~/if}}
++    {{~this.repository}}{{this.prefix}}{{this.issue}}]({{issueUrlFormat}})
++  {{~else}}
++    {{~#if this.owner}}
++      {{~this.owner}}/
++    {{~/if}}
++    {{~this.repository}}{{this.prefix}}{{this.issue}}
++  {{~/if}}{{/each}}
++{{~/if}}
++`,
++``
++  ]
+   const writerOpts = getWriterOpts(finalConfig)
+ 
+   writerOpts.mainTemplate = template
