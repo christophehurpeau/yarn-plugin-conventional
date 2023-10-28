@@ -2980,19 +2980,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:6.7.0":
-  version: 6.7.0
-  resolution: "check-package-dependencies@npm:6.7.0"
+"check-package-dependencies@npm:6.8.0":
+  version: 6.8.0
+  resolution: "check-package-dependencies@npm:6.8.0"
   dependencies:
-    chalk: "npm:^5.2.0"
-    glob: "npm:^10.0.0"
-    import-meta-resolve: "npm:^3.0.0"
-    semver: "npm:^7.5.4"
-    semver-utils: "npm:^1.1.4"
-    type-fest: "npm:^3.0.0"
+    chalk: ^5.2.0
+    glob: ^10.0.0
+    import-meta-resolve: ^3.0.0
+    semver: ^7.5.4
+    semver-utils: ^1.1.4
+    type-fest: ^4.0.0
   bin:
     check-package-dependencies: bin/check-package-dependencies.mjs
-  checksum: e75370533b3f7c0cd4af2e3fbc4c57e7736f26d27ac484328367047dc361615f78768914b61c15b7b2401333f4c08f1a35d41b0335e1fdafa9b0849b9aaa431c
+  checksum: 605438a75ac9740966501578f494802391d265922177e7ae9045253df06f79e8b0fada6da94ab5bf83c2958e585a8a3cdde728b00b19502203b67187fbe9d75c
   languageName: node
   linkType: hard
 
@@ -8387,14 +8387,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^3.0.0, type-fest@npm:^3.8.0":
+"type-fest@npm:^3.8.0":
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: c06b0901d54391dc46de3802375f5579868949d71f93b425ce564e19a428a0d411ae8d8cb0e300d330071d86152c3ea86e744c3f2860a42a79585b6ec2fdae8e
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.2.0":
+"type-fest@npm:^4.0.0, type-fest@npm:^4.2.0":
   version: 4.6.0
   resolution: "type-fest@npm:4.6.0"
   checksum: e38f2b4b35e912bf60dbe7d4350653fb76b241a456e849fab85002ba08e938a26a7c44a330dd5620dd48ce57566be7c97e997064dc0d5066d5b6949b8c444430
@@ -8726,7 +8726,7 @@ __metadata:
     "@yarnpkg/core": 3.5.2
     "@yarnpkg/fslib": 2.10.3
     "@yarnpkg/shell": 3.2.5
-    check-package-dependencies: 6.7.0
+    check-package-dependencies: 6.8.0
     clipanion: 3.2.0-rc.4
     conventional-changelog-conventionalcommits: 7.0.2
     conventional-changelog-core: 7.0.0
