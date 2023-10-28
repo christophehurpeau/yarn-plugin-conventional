@@ -82,7 +82,7 @@
     "conventional-changelog-core": "7.0.0",
     "conventional-changelog-writer": "7.0.1",
     "semver": "7.5.4",
-    "typanion": "3.13.0"
+    "typanion": "3.14.0"
   },
   "devDependencies": {
     "@pob/commitlint-config": "6.0.2",
