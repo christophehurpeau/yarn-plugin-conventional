@@ -1,6 +1,5 @@
 import type { Workspace } from '@yarnpkg/core';
 import { MessageName, execUtils } from '@yarnpkg/core';
-import { ExecError } from '@yarnpkg/core/lib/execUtils';
 
 export const execCommand = async (
   workspace: Workspace,
@@ -13,7 +12,7 @@ export const execCommand = async (
       strict: true,
     });
   } catch (error) {
-    if (error instanceof ExecError) {
+    if (error instanceof execUtils.ExecError) {
       const execError = error;
       const reportExtraOriginal = error.reportExtra;
       error.reportExtra = (report) => {

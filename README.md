@@ -10,6 +10,7 @@
 
 ```bash
 yarn plugin import https://raw.githubusercontent.com/christophehurpeau/yarn-plugin-conventional-version/main/bundles/@yarnpkg/plugin-conventional-version.cjs
+yarn add --dev --exact conventional-changelog-conventionalcommits
 ```
 
 ## Usage

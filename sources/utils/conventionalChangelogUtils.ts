@@ -4,6 +4,7 @@ import concat from 'concat-stream';
 import conventionalChangelog from 'conventional-changelog-core';
 import conventionalCommitsFilter from 'conventional-commits-filter';
 import conventionalCommitsParser from 'conventional-commits-parser';
+import getStream from 'get-stream';
 import gitRawCommits from 'git-raw-commits';
 import type { ConventionalChangelogConfig } from './conventionalCommitConfigUtils';
 
@@ -91,10 +92,8 @@ export const generateChangelog = async (
     lernaPackage = '',
   } = {},
 ): Promise<string> => {
-  let content = '';
-
-  return new Promise((resolve, reject) => {
-    const changelogStream = conventionalChangelog(
+  return getStream(
+    conventionalChangelog(
       {
         lernaPackage,
         debug: verbose
@@ -112,18 +111,8 @@ export const generateChangelog = async (
         previousTag,
       },
       { merges: null, path },
-    ).on('error', (err) => {
-      reject(err);
-    });
-
-    changelogStream.on('data', (buffer) => {
-      content += buffer.toString();
-    });
-
-    changelogStream.on('end', () => {
-      resolve(content);
-    });
-  });
+    ),
+  );
 };
 
 export { default as getGitSemverTags } from 'git-semver-tags';

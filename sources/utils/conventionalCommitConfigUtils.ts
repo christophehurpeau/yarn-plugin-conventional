@@ -1,6 +1,5 @@
 import type { Workspace } from '@yarnpkg/core';
 import { UsageError } from 'clipanion';
-import conventionalChangelogConventionalCommits from 'conventional-changelog-conventionalcommits';
 import type { Options as CoreOptions } from 'conventional-changelog-core';
 import { dynamicRequire } from './dynamicRequire';
 
@@ -12,9 +11,6 @@ export const loadConventionalCommitConfig = async (
 ): Promise<ConventionalChangelogConfig> => {
   try {
     const loadPreset = (): Promise<any> => {
-      if (preset === 'conventional-changelog-conventionalcommits') {
-        return Promise.resolve(conventionalChangelogConventionalCommits);
-      }
       return dynamicRequire(rootWorkspace, preset);
     };
 
