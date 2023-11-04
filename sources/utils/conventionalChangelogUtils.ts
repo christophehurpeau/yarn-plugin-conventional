@@ -1,12 +1,11 @@
-// import concat from 'concat-stream';
 import type { Callback } from '@types/conventional-recommended-bump';
 import type { Workspace } from '@yarnpkg/core';
+import concat from 'concat-stream';
 import conventionalChangelog from 'conventional-changelog-core';
 import conventionalCommitsFilter from 'conventional-commits-filter';
 import conventionalCommitsParser from 'conventional-commits-parser';
+import gitRawCommits from 'git-raw-commits';
 import type { ConventionalChangelogConfig } from './conventionalCommitConfigUtils';
-import type { GetCommitsOptions } from './gitUtils';
-import { getCommits as getRawCommits } from './gitUtils';
 
 // const gitRoot = await gitUtils.fetchRoot(
 //   project.configuration.projectCwd,
@@ -21,8 +20,15 @@ import { getCommits as getRawCommits } from './gitUtils';
 // });
 // console.log({ changedFiles });
 
+export interface GetCommitsOptions {
+  from: string;
+  to?: string;
+  format?: string;
+  path?: string;
+  ignoreChanges?: string[];
+}
+
 export const getParsedCommits = async (
-  workspace: Workspace,
   config: ConventionalChangelogConfig,
   gitRawCommitsOptions: GetCommitsOptions,
 ): Promise<conventionalCommitsParser.Commit[]> => {
@@ -33,12 +39,28 @@ export const getParsedCommits = async (
     throw new Error('Invalid parser options');
   }
 
-  const commits = await getRawCommits(workspace, gitRawCommitsOptions);
-  const parsedCommits = commits.map((commit) =>
-    conventionalCommitsParser.sync(commit, parserOpts),
-  );
-  // this filters reverted commits from the list
-  return conventionalCommitsFilter(parsedCommits);
+  return new Promise((resolve) => {
+    gitRawCommits({
+      format: '%B%n-hash-%n%H',
+      from: gitRawCommitsOptions.from,
+      path: gitRawCommitsOptions.path,
+      ...(gitRawCommitsOptions.ignoreChanges
+        ? {
+            _: gitRawCommitsOptions.ignoreChanges.map(
+              (ignoreChange) => `:(exclude,glob)${ignoreChange}`,
+            ),
+          }
+        : undefined),
+    })
+      .pipe(conventionalCommitsParser(parserOpts))
+      .pipe(
+        concat((data: any) => {
+          // this filters reverted commits from the list
+          const filteredCommits = conventionalCommitsFilter(data);
+          resolve(filteredCommits);
+        }),
+      );
+  });
 };
 
 const versions = ['major', 'minor', 'patch'];

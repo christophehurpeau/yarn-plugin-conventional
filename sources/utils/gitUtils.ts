@@ -85,39 +85,3 @@ export const getDirtyFiles = async (workspace: Workspace): Promise<string> => {
   ]);
   return dirtyFiles;
 };
-
-const DELIMITER =
-  '________________________getCommitsSeparator________________________';
-
-export interface GetCommitsOptions {
-  from: string;
-  to?: string;
-  format?: string;
-  path?: string;
-  ignoreChanges?: string[];
-}
-export const getCommits = async (
-  workspace: Workspace,
-  {
-    from = '',
-    to = 'HEAD',
-    format = '%B%n-hash-%n%H',
-    path,
-    ignoreChanges,
-  }: GetCommitsOptions,
-): Promise<string[]> => {
-  const { stdout: commitsRawString } = await execCommand(workspace, [
-    'git',
-    'log',
-    `--format=format:${format}%n${DELIMITER}`,
-    [from, to].filter(Boolean).join('..'),
-    ...(path ? ['--', path] : []),
-    ...(ignoreChanges
-      ? ignoreChanges.map((ignoreChange) => `:(exclude,glob)${ignoreChange}`)
-      : []),
-  ]);
-  const commits = commitsRawString
-    .slice(0, -`${DELIMITER}\n`.length)
-    .split(`${DELIMITER}\n`);
-  return commits;
-};

@@ -308,16 +308,12 @@ export default class VersionCommand extends BaseCommand {
               workspace.cwd,
             );
 
-            const commits = await getParsedCommits(
-              workspace,
-              conventionalCommitConfig,
-              {
-                format: '%B%n-hash-%n%H',
-                from: previousTag,
-                path: workspaceRelativePath,
-                ignoreChanges: this.ignoreChanges,
-              },
-            );
+            const commits = await getParsedCommits(conventionalCommitConfig, {
+              format: '%B%n-hash-%n%H',
+              from: previousTag,
+              path: workspaceRelativePath,
+              ignoreChanges: this.ignoreChanges,
+            });
 
             // No changes found for this package
             if (commits.length === 0) {
