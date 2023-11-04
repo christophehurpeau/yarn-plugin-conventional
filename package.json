@@ -12,7 +12,7 @@
   "engines": {
     "node": ">=18.12.0"
   },
-  "packageManager": "yarn@4.0.0-rc.45",
+  "packageManager": "yarn@4.0.1",
   "scripts": {
     "build": "builder build plugin && mv bundles/@yarnpkg/plugin-conventional-version.js bundles/@yarnpkg/plugin-conventional-version.cjs",
     "build:dev": "builder build plugin --no-minify --source-map && mv bundles/@yarnpkg/plugin-conventional-version.js bundles/@yarnpkg/plugin-conventional-version.dev.cjs",
@@ -73,8 +73,8 @@
   },
   "dependencies": {
     "@octokit/rest": "20.0.2",
-    "@yarnpkg/cli": "3.6.1",
-    "@yarnpkg/core": "3.5.2",
+    "@yarnpkg/cli": "3.6.4",
+    "@yarnpkg/core": "3.5.4",
     "@yarnpkg/fslib": "2.10.3",
     "@yarnpkg/shell": "3.2.5",
     "clipanion": "3.2.0-rc.4",
