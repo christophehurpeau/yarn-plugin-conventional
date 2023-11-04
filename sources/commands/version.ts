@@ -2,7 +2,7 @@
 /* eslint-disable complexity */
 /* eslint-disable unicorn/no-array-method-this-argument */
 
-import path from 'node:path';
+import path from 'path';
 import { BaseCommand, WorkspaceRequiredError } from '@yarnpkg/cli';
 import {
   Cache,

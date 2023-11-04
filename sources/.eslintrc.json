@@ -19,6 +19,9 @@
     }
   },
   "ignorePatterns": ["*.d.ts"],
+  "rules": {
+    "unicorn/prefer-node-protocol": "off"
+  },
   "overrides": [
     {
       "files": ["**/*.test.ts", "__tests__/**/*.ts", "__mocks__/**/*.ts"],

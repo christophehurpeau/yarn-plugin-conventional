@@ -1,4 +1,4 @@
-import { join } from 'node:path';
+import { join } from 'path';
 import semver from 'semver';
 
 const { outputFile } = await jest.requireActual<any>('fs-extra/esm');

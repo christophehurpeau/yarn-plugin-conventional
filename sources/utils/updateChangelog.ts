@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises';
+import fs from 'fs/promises';
 
 const COMMIT_GUIDELINE =
   'See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.';

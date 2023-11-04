@@ -1,5 +1,5 @@
-import { execFileSync } from 'node:child_process';
-import { URL, fileURLToPath } from 'node:url';
+import { execFileSync } from 'child_process';
+import { URL, fileURLToPath } from 'url';
 
 const yarnPath = fileURLToPath(
   new URL('../../.yarn/releases/yarn-3.6.1.cjs', import.meta.url),
