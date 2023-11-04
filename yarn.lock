@@ -3074,6 +3074,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clipanion@npm:3.2.1":
+  version: 3.2.1
+  resolution: "clipanion@npm:3.2.1"
+  dependencies:
+    typanion: ^3.8.0
+  peerDependencies:
+    typanion: "*"
+  checksum: 448efd122ead3c802e61ba7a2002e2080c8cce01ce8a0a789d9b9e4f8fe70fd887dcf163ef8c778f5364a9e6f4b498b9f1853f709d7ed4291713e78bcfb88ee8
+  languageName: node
+  linkType: hard
+
 "cliui@npm:^8.0.1":
   version: 8.0.1
   resolution: "cliui@npm:8.0.1"
@@ -8334,7 +8345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typanion@npm:3.14.0, typanion@npm:^3.3.0, typanion@npm:^3.3.1":
+"typanion@npm:3.14.0, typanion@npm:^3.3.0, typanion@npm:^3.3.1, typanion@npm:^3.8.0":
   version: 3.14.0
   resolution: "typanion@npm:3.14.0"
   checksum: fc0590d02c13c659eb1689e8adf7777e6c00dc911377e44cd36fe1b1271cfaca71547149f12cdc275058c0de5562a14e5273adbae66d47e6e0320e36007f5912
@@ -8746,7 +8757,7 @@ __metadata:
     "@yarnpkg/fslib": 2.10.3
     "@yarnpkg/shell": 3.2.5
     check-package-dependencies: 6.8.0
-    clipanion: 3.2.0-rc.4
+    clipanion: 3.2.1
     concat-stream: 2.0.0
     conventional-changelog-conventionalcommits: 7.0.2
     conventional-changelog-core: 7.0.0
