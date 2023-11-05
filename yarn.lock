@@ -578,12 +578,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^17.2.0":
-  version: 17.6.6
-  resolution: "@commitlint/config-conventional@npm:17.6.6"
+"@commitlint/config-conventional@npm:^18.0.0":
+  version: 18.1.0
+  resolution: "@commitlint/config-conventional@npm:18.1.0"
   dependencies:
-    conventional-changelog-conventionalcommits: "npm:^5.0.0"
-  checksum: 0f649a2cbe684aa18555cb0027c21f58d74216dbe0a850be041af50f1db04e447b7d90995bee54c61059d735b398de61ac7ecbfd312d14480aac3a3f8c62dd66
+    conventional-changelog-conventionalcommits: "npm:^7.0.2"
+  checksum: 1cbb05b52f8e288c977e08453b8add7c3d2802b2c9ec3cbb65cca38ea5e6ebe56a276c0eb5bc81b0d1630ca839ce106b71428f31d6db796860bc63c317250bba
   languageName: node
   linkType: hard
 
@@ -1365,12 +1365,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/commitlint-config@npm:6.0.2":
-  version: 6.0.2
-  resolution: "@pob/commitlint-config@npm:6.0.2"
+"@pob/commitlint-config@npm:6.2.0":
+  version: 6.2.0
+  resolution: "@pob/commitlint-config@npm:6.2.0"
   dependencies:
-    "@commitlint/config-conventional": "npm:^17.2.0"
-  checksum: ebb95d571a397335cdd08f0a399864118dffe2a7a1eb0e486c8a635c33e152b33eb6b873727af02bc39097d86ef5fc314a1d37a17524e2e0923df257ef3d73c6
+    "@commitlint/config-conventional": "npm:^18.0.0"
+  checksum: ef9c7119ef898a5584bd6c26ac4002e5595c2f96cb6a305394931da8b97c32566b4b49ed62770f5e3c8d3ce36b27d4dbc2d36550eb4807283827ff368047d58a
   languageName: node
   linkType: hard
 
@@ -3481,23 +3481,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conventional-changelog-conventionalcommits@npm:7.0.2":
+"conventional-changelog-conventionalcommits@npm:7.0.2, conventional-changelog-conventionalcommits@npm:^7.0.2":
   version: 7.0.2
   resolution: "conventional-changelog-conventionalcommits@npm:7.0.2"
   dependencies:
     compare-func: "npm:^2.0.0"
   checksum: 3cc6586ac57cc54c0595b28ae22e8b674c970034bad35e467f71aba395278a6ef43351cfbf782a5fc33eb13ed4ad843a145b89ad1444f5fa571e3bf9c1d5519b
-  languageName: node
-  linkType: hard
-
-"conventional-changelog-conventionalcommits@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "conventional-changelog-conventionalcommits@npm:5.0.0"
-  dependencies:
-    compare-func: "npm:^2.0.0"
-    lodash: "npm:^4.17.15"
-    q: "npm:^1.5.1"
-  checksum: cf67329999ed5798fcca243a5d66479f6f8f2122e61a3144186ae3fd15481e9d6647ed7ca74d59d5cfdc568f8c4298ae4cd90b389aecd285cc6a1ba823d85a96
   languageName: node
   linkType: hard
 
@@ -7627,13 +7616,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"q@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "q@npm:1.5.1"
-  checksum: 70c4a30b300277165cd855889cd3aa681929840a5940413297645c5691e00a3549a2a4153131efdf43fe8277ee8cf5a34c9636dcb649d83ad47f311a015fd380
-  languageName: node
-  linkType: hard
-
 "queue-microtask@npm:^1.2.2":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -9145,7 +9127,7 @@ __metadata:
   resolution: "yarn-plugin-conventional-version@workspace:."
   dependencies:
     "@octokit/rest": "npm:20.0.2"
-    "@pob/commitlint-config": "npm:6.0.2"
+    "@pob/commitlint-config": "npm:6.2.0"
     "@pob/eslint-config": "npm:51.0.0"
     "@pob/eslint-config-typescript": "npm:51.0.0"
     "@pob/root": "npm:8.4.2"
