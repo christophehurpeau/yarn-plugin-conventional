@@ -566,6 +566,15 @@ export default class VersionCommand extends BaseCommand {
 
         // do modifications
 
+        // Update yarn.lock ; must be done to make sure preversion script can be ran
+        report.reportInfo(
+          MessageName.UNNAMED,
+          `${getWorkspaceName(rootWorkspace)}: Running install`,
+        );
+        await project.install({ cache, report });
+
+        report.reportInfo(MessageName.UNNAMED, 'Lifecycle script: preversion');
+
         if (isMonorepoVersionIndependent) {
           await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
             rootWorkspace,
@@ -574,16 +583,26 @@ export default class VersionCommand extends BaseCommand {
           );
         }
 
-        await Promise.all(
-          [...bumpedWorkspaces.entries()].map(
-            async ([workspace, { newVersion, dependenciesToBump }]) => {
-              if (!this.dryRun) {
-                await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
-                  workspace,
-                  'preversion',
-                  { cwd: workspace.cwd, report },
-                );
+        if (!this.dryRun) {
+          // lifecycle: preversion
+          await Promise.all(
+            [...bumpedWorkspaces.entries()].map(async ([workspace]) => {
+              await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
+                workspace,
+                'preversion',
+                { cwd: workspace.cwd, report },
+              );
+            }),
+          );
 
+          report.reportInfo(
+            MessageName.UNNAMED,
+            'Modifying versions in package.json',
+          );
+          // update versions
+          await Promise.all(
+            [...bumpedWorkspaces.entries()].map(
+              async ([workspace, { newVersion, dependenciesToBump }]) => {
                 workspace.manifest.version = newVersion;
 
                 for (const [
@@ -600,16 +619,30 @@ export default class VersionCommand extends BaseCommand {
                     newDescriptor,
                   );
                 }
+              },
+            ),
+          );
 
-                await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
-                  workspace,
-                  'version',
-                  { cwd: workspace.cwd, report },
-                );
-              }
-            },
-          ),
-        );
+          // Update yarn.lock ; must be done before running again lifecycle scripts
+          report.reportInfo(
+            MessageName.UNNAMED,
+            `${getWorkspaceName(rootWorkspace)}: Running install`,
+          );
+          await project.install({ cache, report });
+
+          report.reportInfo(MessageName.UNNAMED, 'Lifecycle script: version');
+
+          // lifecycle: version
+          await Promise.all(
+            [...bumpedWorkspaces.entries()].map(async ([workspace]) => {
+              await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
+                workspace,
+                'version',
+                { cwd: workspace.cwd, report },
+              );
+            }),
+          );
+        }
 
         if (isMonorepoVersionIndependent) {
           await scriptUtils.maybeExecuteWorkspaceLifecycleScript(
