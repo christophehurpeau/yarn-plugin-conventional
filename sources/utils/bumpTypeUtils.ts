@@ -24,13 +24,18 @@ export const calcBumpRange = (
   let useWorkspaceProtocol = false;
 
   if (range.startsWith(WorkspaceResolver.protocol)) {
-    range = range.slice(WorkspaceResolver.protocol.length);
+    const slicedRange = range.slice(WorkspaceResolver.protocol.length);
 
     // Workspaces referenced through their path never get upgraded ("workspace:packages/yarnpkg-core")
-    if (range === workspace.relativeCwd) {
+    if (slicedRange === workspace.relativeCwd) {
       return range;
     }
 
+    if (slicedRange === '*') {
+      return range;
+    }
+
+    range = slicedRange;
     useWorkspaceProtocol = true;
   }
 
