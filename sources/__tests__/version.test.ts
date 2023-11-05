@@ -1,10 +1,6 @@
 import { execFileSync } from 'child_process';
 import { URL, fileURLToPath } from 'url';
 
-const yarnPath = fileURLToPath(
-  new URL('../../.yarn/releases/yarn-3.6.1.cjs', import.meta.url),
-);
-
 async function executeCommand(
   command: string,
   args: string[],
@@ -17,7 +13,7 @@ async function executeCommand(
   stderr: string;
 }> {
   try {
-    const stdout = execFileSync(yarnPath, [command, ...args], {
+    const stdout = execFileSync('yarn', [command, ...args], {
       cwd: fileURLToPath(options.cwd),
       stdio: 'pipe',
     });
@@ -26,6 +22,7 @@ async function executeCommand(
     if (error.status === undefined) {
       throw error;
     }
+
     return {
       exitCode: error.status,
       stdout: error.stdout.toString('utf8'),
