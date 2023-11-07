@@ -60,7 +60,7 @@
     "@pob/eslint-config": "51.1.2",
     "@pob/eslint-config-typescript": "51.1.2",
     "@pob/root": "8.6.0",
-    "@types/conventional-changelog-core": "4.2.5",
+    "@types/conventional-changelog-core": "4.2.6",
     "@types/conventional-recommended-bump": "9.0.2",
     "@types/jest": "29.5.7",
     "@yarnpkg/builder": "4.0.0",
