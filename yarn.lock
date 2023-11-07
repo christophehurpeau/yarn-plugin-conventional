@@ -1586,9 +1586,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/conventional-changelog-core@npm:*, @types/conventional-changelog-core@npm:4.2.5":
-  version: 4.2.5
-  resolution: "@types/conventional-changelog-core@npm:4.2.5"
+"@types/conventional-changelog-core@npm:*, @types/conventional-changelog-core@npm:4.2.6":
+  version: 4.2.6
+  resolution: "@types/conventional-changelog-core@npm:4.2.6"
   dependencies:
     "@types/conventional-changelog-writer": "npm:*"
     "@types/conventional-commits-parser": "npm:*"
@@ -1596,7 +1596,7 @@ __metadata:
     "@types/git-raw-commits": "npm:*"
     "@types/node": "npm:*"
     "@types/normalize-package-data": "npm:*"
-  checksum: 9d3578b55bdf826dd32d280f6897c1cd35fbc7cdb3ce476d731adf0967bad44a0bae93cf6f35c125756029809cdcbaa6dde653d0e7b97ba5e655f5349e724568
+  checksum: 0dd863111e5e60786f8400e8d17162ff67816e40efe9a3e37c10551b1b7a19f1c2c635180d252bd88f1c645522137cf45b00cfc5a772d6a2b4858970e663c33c
   languageName: node
   linkType: hard
 
@@ -9075,7 +9075,7 @@ __metadata:
     "@pob/eslint-config": "npm:51.1.2"
     "@pob/eslint-config-typescript": "npm:51.1.2"
     "@pob/root": "npm:8.6.0"
-    "@types/conventional-changelog-core": "npm:4.2.5"
+    "@types/conventional-changelog-core": "npm:4.2.6"
     "@types/conventional-recommended-bump": "npm:9.0.2"
     "@types/jest": "npm:29.5.7"
     "@yarnpkg/builder": "npm:4.0.0"
