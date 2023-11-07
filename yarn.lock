@@ -1619,14 +1619,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/conventional-recommended-bump@npm:*, @types/conventional-recommended-bump@npm:9.0.2":
-  version: 9.0.2
-  resolution: "@types/conventional-recommended-bump@npm:9.0.2"
+"@types/conventional-recommended-bump@npm:*, @types/conventional-recommended-bump@npm:9.0.3":
+  version: 9.0.3
+  resolution: "@types/conventional-recommended-bump@npm:9.0.3"
   dependencies:
     "@types/conventional-changelog-core": "npm:*"
     "@types/conventional-changelog-writer": "npm:*"
     "@types/conventional-commits-parser": "npm:*"
-  checksum: ec67a8b6ea1bfe5e08357eca1455d1c481784e068a90cde31350e2b4ded3be2c47f543e1d0164f78b87ac20193eddb98e9f35c070c4ad45241e4e299f44b0ce1
+  checksum: 65c57081032e534dd6999795cf832a91d3c8576d4f59ca1668bd93536d1f95ecc76ec2dec8e9dd5e7a345158890170eebef949268b0a94e442fb9d86a5ee863c
   languageName: node
   linkType: hard
 
@@ -9076,7 +9076,7 @@ __metadata:
     "@pob/eslint-config-typescript": "npm:51.1.2"
     "@pob/root": "npm:8.6.0"
     "@types/conventional-changelog-core": "npm:4.2.6"
-    "@types/conventional-recommended-bump": "npm:9.0.2"
+    "@types/conventional-recommended-bump": "npm:9.0.3"
     "@types/jest": "npm:29.5.7"
     "@yarnpkg/builder": "npm:4.0.0"
     "@yarnpkg/cli": "npm:4.0.1"
