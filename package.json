@@ -11,7 +11,7 @@
   "engines": {
     "node": ">=18.12.0"
   },
-  "packageManager": "yarn@4.0.1",
+  "packageManager": "yarn@4.0.2",
   "scripts": {
     "build": "builder build plugin && mv bundles/@yarnpkg/plugin-conventional-version.js bundles/@yarnpkg/plugin-conventional-version.cjs",
     "build:dev": "builder build plugin --no-minify --source-map && mv bundles/@yarnpkg/plugin-conventional-version.js bundles/@yarnpkg/plugin-conventional-version.dev.cjs",
