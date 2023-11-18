@@ -41,8 +41,8 @@
   },
   "dependencies": {
     "@octokit/rest": "20.0.2",
-    "@yarnpkg/cli": "4.0.1",
-    "@yarnpkg/core": "4.0.1",
+    "@yarnpkg/cli": "4.0.2",
+    "@yarnpkg/core": "4.0.2",
     "@yarnpkg/fslib": "3.0.1",
     "@yarnpkg/shell": "4.0.0",
     "clipanion": "4.0.0-rc.2",
