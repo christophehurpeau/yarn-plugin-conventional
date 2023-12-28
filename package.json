@@ -24,7 +24,7 @@
     "postinstall": "pob-root-postinstall",
     "start": "pob-watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest  --coverage --coverageReporters=json --coverageReporters=text",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --coverageReporters=json --coverageReporters=text",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "watch": "pob-watch"
   },

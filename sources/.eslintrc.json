@@ -8,13 +8,13 @@
   "plugins": ["@typescript-eslint"],
   "extends": [
     "@pob/eslint-config-typescript",
-    "@pob/eslint-config-typescript/node",
+    "@pob/eslint-config-typescript/app",
     "@pob/eslint-config-typescript/allow-unsafe"
   ],
   "settings": {
     "import/resolver": {
       "node": {
-        "paths": ["./node_modules", "./src"]
+        "moduleDirectory": ["node_modules", "sources"]
       }
     }
   },
@@ -24,7 +24,7 @@
   },
   "overrides": [
     {
-      "files": ["**/*.test.ts", "__tests__/**/*.ts", "__mocks__/**/*.ts"],
+      "files": ["**/*.test.ts", "__tests__/**/*.ts"],
       "extends": ["@pob/eslint-config-typescript/test"],
       "env": {
         "jest": true
