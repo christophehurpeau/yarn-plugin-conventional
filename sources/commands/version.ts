@@ -73,9 +73,9 @@ interface BumpedWorkspace extends ChangedWorkspace {
 }
 
 export default class VersionCommand extends BaseCommand {
-  static paths = [['version']];
+  static override paths = [['version']];
 
-  static usage: Usage = Command.Usage({
+  static override usage: Usage = Command.Usage({
     category: 'Conventional Version commands',
     description: 'Bump package version using conventional commit',
   });

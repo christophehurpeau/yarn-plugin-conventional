@@ -8,10 +8,10 @@
   "repository": "https://github.com/christophehurpeau/yarn-plugin-conventional-version.git",
   "homepage": "https://github.com/christophehurpeau/yarn-plugin-conventional-version",
   "type": "module",
+  "packageManager": "yarn@4.0.2",
   "engines": {
     "node": ">=18.12.0"
   },
-  "packageManager": "yarn@4.0.2",
   "scripts": {
     "build": "builder build plugin && mv bundles/@yarnpkg/plugin-conventional-version.js bundles/@yarnpkg/plugin-conventional-version.cjs",
     "build:dev": "builder build plugin --no-minify --source-map && mv bundles/@yarnpkg/plugin-conventional-version.js bundles/@yarnpkg/plugin-conventional-version.dev.cjs",
@@ -24,16 +24,18 @@
     "postinstall": "pob-root-postinstall",
     "start": "pob-watch",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest  --coverage --coverageReporters=json --coverageReporters=text",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --coverageReporters=json --coverageReporters=text",
+    "test:coverage:json": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --coverageReporters=json",
+    "test:coverage:lcov": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --coverageReporters=lcov",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "watch": "pob-watch"
   },
-  "prettier": "@pob/root/prettier-config",
   "commitlint": {
     "extends": [
       "@pob/commitlint-config"
     ]
   },
+  "prettier": "@pob/root/prettier-config",
   "resolutions": {
     "conventional-changelog-core@7.0.0": "patch:conventional-changelog-core@npm%3A7.0.0#./.yarn/patches/conventional-changelog-core-npm-7.0.0-fd50689040.patch",
     "conventional-changelog-writer@^7.0.0": "patch:conventional-changelog-writer@npm%3A7.0.1#./.yarn/patches/conventional-changelog-writer-npm-7.0.1-7f3f5e338c.patch",
@@ -41,8 +43,8 @@
   },
   "dependencies": {
     "@octokit/rest": "20.0.2",
-    "@yarnpkg/cli": "4.0.1",
-    "@yarnpkg/core": "4.0.1",
+    "@yarnpkg/cli": "4.0.2",
+    "@yarnpkg/core": "4.0.2",
     "@yarnpkg/fslib": "3.0.1",
     "@yarnpkg/shell": "4.0.0",
     "clipanion": "4.0.0-rc.2",
@@ -59,7 +61,7 @@
     "@pob/commitlint-config": "6.3.1",
     "@pob/eslint-config": "53.0.0",
     "@pob/eslint-config-typescript": "53.1.0",
-    "@pob/root": "8.6.0",
+    "@pob/root": "9.1.0",
     "@types/conventional-changelog-core": "4.2.7",
     "@types/conventional-recommended-bump": "9.0.3",
     "@types/jest": "29.5.11",

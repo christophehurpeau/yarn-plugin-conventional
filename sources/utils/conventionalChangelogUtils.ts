@@ -1,5 +1,4 @@
 import type { Callback } from '@types/conventional-recommended-bump';
-import type { Workspace } from '@yarnpkg/core';
 import concat from 'concat-stream';
 import conventionalChangelog from 'conventional-changelog-core';
 import conventionalCommitsFilter from 'conventional-commits-filter';
