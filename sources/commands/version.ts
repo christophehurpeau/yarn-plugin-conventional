@@ -62,14 +62,17 @@ interface ChangedWorkspace {
   bumpType: BumpType;
 }
 
-interface BumpedWorkspace extends ChangedWorkspace {
+interface NoVersionToUpdateWorkspace {
+  // for legacy configuration not using workspaces ranges https://yarnpkg.com/features/workspaces#workspace-ranges-workspace
+  dependenciesToBump: [DependencyType, Descriptor, string][];
+}
+
+interface BumpedWorkspace extends ChangedWorkspace, NoVersionToUpdateWorkspace {
   bumpForDependenciesReasons?: string[];
   hasChanged: boolean;
   currentVersion: string;
   newVersion: string;
   newTag: string | null;
-  // for legacy configuration not using workspaces ranges https://yarnpkg.com/features/workspaces#workspace-ranges-workspace
-  dependenciesToBump: [DependencyType, Descriptor, string][];
 }
 
 export default class VersionCommand extends BaseCommand {
@@ -363,6 +366,10 @@ export default class VersionCommand extends BaseCommand {
         report.reportInfo(MessageName.UNNAMED, 'Preparing bumping');
 
         const bumpedWorkspaces = new Map<Workspace, BumpedWorkspace>();
+        const noVersionToUpdateWorkspaces = new Map<
+          Workspace,
+          NoVersionToUpdateWorkspace
+        >();
         const batches = dependenciesMap
           ? buildTopologicalOrderBatches(project, dependenciesMap)
           : [[rootWorkspace]];
@@ -451,6 +458,11 @@ export default class VersionCommand extends BaseCommand {
                 MessageName.UNNAMED,
                 `${workspaceName}: skipped (no version)`,
               );
+              if (workspace !== rootWorkspace) {
+                noVersionToUpdateWorkspaces.set(workspace, {
+                  dependenciesToBump,
+                });
+              }
             } else if (!bumpType) {
               report.reportInfo(
                 MessageName.UNNAMED,
@@ -535,15 +547,21 @@ export default class VersionCommand extends BaseCommand {
               bumpedWorkspace.bumpType = highestBumpType;
               bumpedWorkspace.newVersion = newVersion;
               bumpedWorkspace.newTag = null;
-              bumpedWorkspace.dependenciesToBump.forEach((dependencyToBump) => {
-                dependencyToBump[2] = calcBumpRange(
-                  workspace,
-                  dependencyToBump[1].range,
-                  newVersion,
-                );
-              });
             },
           );
+
+          [
+            ...bumpedWorkspaces.entries(),
+            ...noVersionToUpdateWorkspaces.entries(),
+          ].forEach(([workspace, { dependenciesToBump }]) => {
+            dependenciesToBump.forEach((dependencyToBump) => {
+              dependencyToBump[2] = calcBumpRange(
+                workspace,
+                dependencyToBump[1].range,
+                newVersion,
+              );
+            });
+          });
 
           bumpedWorkspaces.set(rootWorkspace, {
             currentVersion,
