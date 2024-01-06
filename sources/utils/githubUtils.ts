@@ -69,6 +69,7 @@ export const createGitRelease = async (
   tag: string,
   body: string,
   prerelease: boolean,
+  // eslint-disable-next-line @typescript-eslint/max-params
 ): Promise<void> => {
   await githubClient.repos.createRelease({
     owner: parsedRepoUrl.username,

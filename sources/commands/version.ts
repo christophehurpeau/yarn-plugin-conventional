@@ -245,7 +245,7 @@ export default class VersionCommand extends BaseCommand {
         json: this.json,
         stdout: this.context.stdout,
       },
-      async (report): Promise<number> => {
+      async (report): Promise<void> => {
         const changedWorkspaces = new Map<Workspace, ChangedWorkspace>();
         const previousTags = new Map<Workspace, string>();
         const dependenciesMap = isMonorepo
@@ -360,7 +360,7 @@ export default class VersionCommand extends BaseCommand {
 
         if (changedWorkspaces.size === 0) {
           report.reportInfo(MessageName.UNNAMED, 'No changed workspaces');
-          return 0;
+          return;
         }
 
         report.reportInfo(MessageName.UNNAMED, 'Preparing bumping');
@@ -786,7 +786,7 @@ export default class VersionCommand extends BaseCommand {
             )
           ) {
             report.reportInfo(MessageName.UNNAMED, 'Remote is ahead, aborting');
-            return process.env.CI ? 0 : 1;
+            return;
           }
 
           // run postversion
@@ -831,7 +831,6 @@ export default class VersionCommand extends BaseCommand {
             );
           }
         }
-        return 0;
       },
     );
 
