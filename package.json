@@ -35,6 +35,9 @@
       "@pob/commitlint-config"
     ]
   },
+  "pob": {
+    "typescript": true
+  },
   "prettier": "@pob/root/prettier-config",
   "resolutions": {
     "conventional-changelog-core@7.0.0": "patch:conventional-changelog-core@npm%3A7.0.0#./.yarn/patches/conventional-changelog-core-npm-7.0.0-fd50689040.patch",

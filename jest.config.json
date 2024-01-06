@@ -1,16 +1,17 @@
 {
   "cacheDirectory": "./node_modules/.cache/jest",
   "testMatch": [
-    "<rootDir>/sources/**/__tests__/**/*.?(m)js",
-    "<rootDir>/sources/**/*.test.?(m)js"
+    "<rootDir>/sources/**/__tests__/**/*.ts",
+    "<rootDir>/sources/**/*.test.ts"
   ],
-  "collectCoverageFrom": ["sources/**/*.?(m)js"],
-  "moduleFileExtensions": ["js", "json"],
-  "extensionsToTreatAsEsm": [],
+  "collectCoverageFrom": ["sources/**/*.ts"],
+  "moduleFileExtensions": ["ts", "js", "json"],
+  "extensionsToTreatAsEsm": [".ts"],
   "transform": {
     "^.+\\.ts$": [
       "jest-esbuild",
       {
+        "target": "node20",
         "format": "esm"
       }
     ]

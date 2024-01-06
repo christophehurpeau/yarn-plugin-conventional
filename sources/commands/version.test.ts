@@ -31,11 +31,21 @@ async function executeCommand(
   }
 }
 
+const presetOption = [
+  '--preset',
+  fileURLToPath(
+    new URL(
+      '../../node_modules/conventional-changelog-conventionalcommits',
+      import.meta.url,
+    ),
+  ),
+];
+
 describe('version', () => {
   it('should fail if package has no version', async () => {
     const { exitCode, stdout, stderr } = await executeCommand(
       'version',
-      ['--dry-run'],
+      [...presetOption, '--dry-run'],
       {
         cwd: new URL('../__fixtures__/no-version', import.meta.url),
       },
@@ -50,7 +60,7 @@ describe('version', () => {
   it('should fail if --prerelease is passed', async () => {
     const { exitCode, stdout, stderr } = await executeCommand(
       'version',
-      ['--prerelease=alpha', '--dry-run'],
+      [...presetOption, '--prerelease=alpha', '--dry-run'],
       {
         cwd: new URL('../__fixtures__/basic', import.meta.url),
       },
@@ -63,7 +73,7 @@ describe('version', () => {
   it('should pass with dry-run and force', async () => {
     const { exitCode, stdout, stderr } = await executeCommand(
       'version',
-      ['--force=minor', '--dry-run'],
+      [...presetOption, '--force=minor', '--dry-run'],
       {
         cwd: new URL('../__fixtures__/basic', import.meta.url),
       },
