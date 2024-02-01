@@ -72,7 +72,7 @@
     "@types/conventional-changelog-core": "4.2.7",
     "@types/conventional-recommended-bump": "9.0.3",
     "@types/git-semver-tags": "7.0.0",
-    "@types/jest": "29.5.11",
+    "@types/jest": "29.5.12",
     "@yarnpkg/builder": "4.0.0",
     "check-package-dependencies": "7.0.0",
     "eslint": "8.56.0",
