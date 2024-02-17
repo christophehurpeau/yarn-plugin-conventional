@@ -6,6 +6,7 @@
   "include": ["sources/**/*.ts"],
   "compilerOptions": {
     "rootDir": "sources",
+    "baseUrl": "" /* Base directory to resolve non-absolute module names. */,
     "noEmit": true,
 
     "resolveJsonModule": true
