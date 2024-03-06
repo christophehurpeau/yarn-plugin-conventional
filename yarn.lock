@@ -3185,9 +3185,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:7.0.0":
-  version: 7.0.0
-  resolution: "check-package-dependencies@npm:7.0.0"
+"check-package-dependencies@npm:7.1.1":
+  version: 7.1.1
+  resolution: "check-package-dependencies@npm:7.1.1"
   dependencies:
     chalk: "npm:^5.2.0"
     glob: "npm:^10.0.0"
@@ -3197,7 +3197,7 @@ __metadata:
     type-fest: "npm:^4.0.0"
   bin:
     check-package-dependencies: ./bin/check-package-dependencies.mjs
-  checksum: 10c0/8e46b6fd7d9625d531eaba715901ce9e3d456439e65ff0f4b5d3e7dc8caf4153fa9fdba00bb595b33504f6a30b565eb54c3dd612e073248c926670530fddcaaa
+  checksum: 10c0/2cc7519455e4038d19f1892326992d346616ca8a288c7cedc445ed8de3d45e57ba968a4f15c62ad0d7d92d83bb43d917a25649849c748c9b7315d54ad512dec8
   languageName: node
   linkType: hard
 
@@ -9123,7 +9123,7 @@ __metadata:
     "@yarnpkg/core": "npm:4.0.2"
     "@yarnpkg/fslib": "npm:3.0.1"
     "@yarnpkg/shell": "npm:4.0.0"
-    check-package-dependencies: "npm:7.0.0"
+    check-package-dependencies: "npm:7.1.1"
     clipanion: "npm:4.0.0-rc.2"
     concat-stream: "npm:2.0.0"
     conventional-changelog-conventionalcommits: "npm:7.0.2"
