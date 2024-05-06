@@ -65,9 +65,11 @@
   },
   "devDependencies": {
     "@pob/commitlint-config": "6.3.3",
-    "@pob/eslint-config": "53.0.0",
-    "@pob/eslint-config-typescript": "53.1.0",
+    "@pob/eslint-config": "55.3.0",
+    "@pob/eslint-config-typescript": "55.3.0",
     "@pob/root": "10.0.0",
+    "@swc/core": "1.5.0",
+    "@swc/jest": "0.2.36",
     "@types/concat-stream": "2.0.3",
     "@types/conventional-changelog-core": "4.2.7",
     "@types/conventional-recommended-bump": "9.0.3",

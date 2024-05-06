@@ -11,7 +11,6 @@
     "^.+\\.ts$": [
       "jest-esbuild",
       {
-        "target": "node20",
         "format": "esm"
       }
     ]
