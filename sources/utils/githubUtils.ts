@@ -1,16 +1,16 @@
-import { Octokit } from '@octokit/rest';
-import type { Workspace } from '@yarnpkg/core';
-import { UsageError } from 'clipanion';
-import { dynamicRequire } from './dynamicRequire';
+import { Octokit } from "@octokit/rest";
+import type { Workspace } from "@yarnpkg/core";
+import { UsageError } from "clipanion";
+import { dynamicRequire } from "./dynamicRequire";
 
 export async function createGitHubClient(
-  workspace: Workspace,
+  workspace: Workspace
 ): Promise<Octokit> {
   const { GH_TOKEN, GHE_API_URL, GHE_VERSION } = process.env;
 
   if (!GH_TOKEN) {
     throw new UsageError(
-      '"GH_TOKEN" environment variable required when "createRelease" is set to "github"',
+      '"GH_TOKEN" environment variable required when "createRelease" is set to "github"'
     );
   }
 
@@ -18,8 +18,8 @@ export async function createGitHubClient(
     Octokit.plugin(
       await dynamicRequire<any>(
         workspace,
-        `@octokit/plugin-enterprise-rest/ghe-${GHE_VERSION}`,
-      ),
+        `@octokit/plugin-enterprise-rest/ghe-${GHE_VERSION}`
+      )
     );
   }
 
@@ -47,11 +47,11 @@ export const parseGithubRepoUrl = (workspace: Workspace): ParsedGithubUrl => {
   const repository = workspace.manifest.raw.repository;
 
   const url: string | undefined =
-    typeof repository === 'string' ? repository : repository?.url;
+    typeof repository === "string" ? repository : repository?.url;
 
   if (!url) {
     throw new Error(
-      'No repository URL found in manifest. Please add one and try again. https://docs.npmjs.com/cli/v9/configuring-npm/package-json#repository',
+      "No repository URL found in manifest. Please add one and try again. https://docs.npmjs.com/cli/v9/configuring-npm/package-json#repository"
     );
   }
   const match = githubRegex.exec(url);
@@ -68,7 +68,7 @@ export const createGitRelease = async (
   parsedRepoUrl: ParsedGithubUrl,
   tag: string,
   body: string,
-  prerelease: boolean,
+  prerelease: boolean
   // eslint-disable-next-line @typescript-eslint/max-params
 ): Promise<void> => {
   await githubClient.repos.createRelease({

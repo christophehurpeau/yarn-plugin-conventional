@@ -11,6 +11,7 @@
     "app": {
       "type": "yarn-plugin",
       "testing": true,
+      "testRunner": "vitest",
       "ci": true,
       "codecov": true
     }

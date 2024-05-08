@@ -1,9 +1,9 @@
-import type { Workspace } from '@yarnpkg/core';
-import { MessageName, execUtils } from '@yarnpkg/core';
+import type { Workspace } from "@yarnpkg/core";
+import { MessageName, execUtils } from "@yarnpkg/core";
 
 export const execCommand = async (
   workspace: Workspace,
-  commandAndArgs: string[] = [],
+  commandAndArgs: string[] = []
 ): ReturnType<typeof execUtils.execvp> => {
   try {
     const [command, ...args] = commandAndArgs;
@@ -18,15 +18,15 @@ export const execCommand = async (
       error.reportExtra = (report) => {
         report.reportError(
           MessageName.EXCEPTION,
-          `Command failed: ${commandAndArgs.join(' ')}`,
+          `Command failed: ${commandAndArgs.join(" ")}`
         );
         report.reportError(
           MessageName.EXCEPTION,
-          `stdout: ${execError.stdout.toString().trim()}`,
+          `stdout: ${execError.stdout.toString().trim()}`
         );
         report.reportError(
           MessageName.EXCEPTION,
-          `stderr: ${execError.stderr.toString().trim()}`,
+          `stderr: ${execError.stderr.toString().trim()}`
         );
         if (reportExtraOriginal) reportExtraOriginal(report);
       };

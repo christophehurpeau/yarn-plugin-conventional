@@ -1,10 +1,10 @@
-import type { Workspace } from '@yarnpkg/core';
-import { WorkspaceResolver } from '@yarnpkg/core';
-import { UsageError } from 'clipanion';
-import semver from 'semver';
-import { getWorkspaceName } from './workspaceUtils';
+import type { Workspace } from "@yarnpkg/core";
+import { WorkspaceResolver } from "@yarnpkg/core";
+import { UsageError } from "clipanion";
+import semver from "semver";
+import { getWorkspaceName } from "./workspaceUtils";
 
-export type BumpType = 'major' | 'minor' | 'patch';
+export type BumpType = "major" | "minor" | "patch";
 
 // https://github.com/yarnpkg/berry/blob/506ded5f5f5a89553435940c74f1d857fd685a42/packages/plugin-version/sources/versionUtils.ts#L10
 // Basically we only support auto-upgrading the ranges that are very simple (^x.y.z, ~x.y.z, >=x.y.z, and of course x.y.z)
@@ -15,9 +15,9 @@ const SUPPORTED_UPGRADE_REGEXP =
 export const calcBumpRange = (
   workspace: Workspace,
   range: string,
-  newVersion: string,
+  newVersion: string
 ): string => {
-  if (range === '*') {
+  if (range === "*") {
     return range;
   }
 
@@ -31,7 +31,7 @@ export const calcBumpRange = (
       return range;
     }
 
-    if (slicedRange === '*') {
+    if (slicedRange === "*") {
       return range;
     }
 
@@ -45,42 +45,42 @@ export const calcBumpRange = (
     throw new Error(`Couldn't bump range ${range} in ${workspaceName}`);
   }
 
-  return `${useWorkspaceProtocol ? WorkspaceResolver.protocol : ''}${
+  return `${useWorkspaceProtocol ? WorkspaceResolver.protocol : ""}${
     parsed[1]
   }${newVersion}`;
 };
 
 export const getHighestBumpType = (bumpTypes: BumpType[]): BumpType => {
-  if (bumpTypes.includes('major')) {
-    return 'major';
+  if (bumpTypes.includes("major")) {
+    return "major";
   }
 
-  if (bumpTypes.includes('minor')) {
-    return 'minor';
+  if (bumpTypes.includes("minor")) {
+    return "minor";
   }
 
-  return 'patch';
+  return "patch";
 };
 
 export const calcBumpType = (
   bumpType: BumpType,
-  maxBumpType: BumpType,
+  maxBumpType: BumpType
 ): BumpType => {
-  if (maxBumpType === 'major') {
+  if (maxBumpType === "major") {
     return bumpType;
   }
 
-  if (maxBumpType === 'minor') {
-    return bumpType === 'major' || bumpType === 'minor' ? 'minor' : 'patch';
+  if (maxBumpType === "minor") {
+    return bumpType === "major" || bumpType === "minor" ? "minor" : "patch";
   }
 
-  return 'patch';
+  return "patch";
 };
 
 const incVersion = (version: string, bumpType: BumpType): string | null => {
   // handle breaking of 0.x
-  if (bumpType === 'major' && semver.major(version) === 0) {
-    bumpType = 'minor';
+  if (bumpType === "major" && semver.major(version) === 0) {
+    bumpType = "minor";
   }
   return semver.inc(version, bumpType);
 };
@@ -88,15 +88,15 @@ const incVersion = (version: string, bumpType: BumpType): string | null => {
 export const incrementVersion = (
   workspace: Workspace,
   currentVersion: string,
-  bumpType: BumpType,
+  bumpType: BumpType
 ): string => {
   const newVersion = incVersion(currentVersion, bumpType);
 
   if (!newVersion) {
     throw new UsageError(
       `Could not determine next version for "${getWorkspaceName(
-        workspace,
-      )}" (currentVersion: ${currentVersion}, bumpType: ${bumpType}})`,
+        workspace
+      )}" (currentVersion: ${currentVersion}, bumpType: ${bumpType}})`
     );
   }
 

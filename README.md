@@ -31,7 +31,7 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: 'Dry run'
+        description: "Dry run"
         required: true
         type: boolean
         default: false
@@ -96,19 +96,19 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: 'Dry run'
+        description: "Dry run"
         required: true
         type: boolean
         default: false
       bump-dependents-highest-as:
-        description: 'Bump dependents highest as'
+        description: "Bump dependents highest as"
         required: false
         type: choice
         options:
           - major
           - minor
           - patch
-        default: 'major'
+        default: "major"
 
 jobs:
   release:

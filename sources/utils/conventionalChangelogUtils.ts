@@ -1,12 +1,12 @@
-import concat from 'concat-stream';
-import conventionalChangelog from 'conventional-changelog-core';
-import conventionalCommitsFilter from 'conventional-commits-filter';
-import conventionalCommitsParser from 'conventional-commits-parser';
-import type { Recommendation } from 'conventional-recommended-bump';
+import concat from "concat-stream";
+import conventionalChangelog from "conventional-changelog-core";
+import conventionalCommitsFilter from "conventional-commits-filter";
+import conventionalCommitsParser from "conventional-commits-parser";
+import type { Recommendation } from "conventional-recommended-bump";
 // eslint-disable-next-line import/no-unresolved -- "exports" https://github.com/import-js/eslint-plugin-import/issues/1810
-import getStream from 'get-stream';
-import gitRawCommits from 'git-raw-commits';
-import type { ConventionalChangelogConfig } from './conventionalCommitConfigUtils';
+import getStream from "get-stream";
+import gitRawCommits from "git-raw-commits";
+import type { ConventionalChangelogConfig } from "./conventionalCommitConfigUtils";
 
 // const gitRoot = await gitUtils.fetchRoot(
 //   project.configuration.projectCwd,
@@ -31,23 +31,23 @@ export interface GetCommitsOptions {
 
 export const getParsedCommits = async (
   config: ConventionalChangelogConfig,
-  gitRawCommitsOptions: GetCommitsOptions,
+  gitRawCommitsOptions: GetCommitsOptions
 ): Promise<conventionalCommitsParser.Commit[]> => {
   const parserOpts = config.parserOpts;
 
   if (!parserOpts) {
-    throw new Error('Invalid parser options');
+    throw new Error("Invalid parser options");
   }
 
   return new Promise((resolve) => {
     gitRawCommits({
-      format: '%B%n-hash-%n%H',
+      format: "%B%n-hash-%n%H",
       from: gitRawCommitsOptions.from,
       path: gitRawCommitsOptions.path,
       ...(gitRawCommitsOptions.ignoreChanges
         ? {
             _: gitRawCommitsOptions.ignoreChanges.map(
-              (ignoreChange) => `:(exclude,glob)${ignoreChange}`,
+              (ignoreChange) => `:(exclude,glob)${ignoreChange}`
             ),
           }
         : undefined),
@@ -58,19 +58,19 @@ export const getParsedCommits = async (
           // this filters reverted commits from the list
           const filteredCommits = conventionalCommitsFilter(data);
           resolve(filteredCommits);
-        }),
+        })
       );
   });
 };
 
-const versions: Recommendation['releaseType'][] = ['major', 'minor', 'patch'];
+const versions: Recommendation["releaseType"][] = ["major", "minor", "patch"];
 export const recommendBump = (
   commits: conventionalCommitsParser.Commit[],
-  config: ConventionalChangelogConfig,
+  config: ConventionalChangelogConfig
 ): Recommendation => {
   const whatBump = config.recommendedBumpOpts?.whatBump;
   if (!whatBump) {
-    throw new Error('recommendedBumpOpts.whatBump method is missing in config');
+    throw new Error("recommendedBumpOpts.whatBump method is missing in config");
   }
   let result: Recommendation = { ...whatBump(commits) };
   if (result?.level != null) {
@@ -87,12 +87,12 @@ export const generateChangelog = async (
   newVersion: string,
   newTag: string | null,
   {
-    previousTag = '',
+    previousTag = "",
     verbose = false,
-    tagPrefix = 'v',
-    path = '',
-    lernaPackage = '',
-  } = {},
+    tagPrefix = "v",
+    path = "",
+    lernaPackage = "",
+  } = {}
   // eslint-disable-next-line @typescript-eslint/max-params
 ): Promise<string> => {
   return getStream(
@@ -100,7 +100,7 @@ export const generateChangelog = async (
       {
         lernaPackage,
         debug: verbose
-          ? console.info.bind(console, 'conventional-changelog')
+          ? console.info.bind(console, "conventional-changelog")
           : undefined,
         config,
         tagPrefix,
@@ -113,9 +113,9 @@ export const generateChangelog = async (
         currentTag: newTag === null ? undefined : newTag,
         previousTag,
       } as any,
-      { merges: null, path },
-    ),
+      { merges: null, path }
+    )
   );
 };
 
-export { default as getGitSemverTags } from 'git-semver-tags';
+export { default as getGitSemverTags } from "git-semver-tags";

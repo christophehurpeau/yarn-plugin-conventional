@@ -1,1 +1,1 @@
-declare module 'conventional-commits-filter';
+declare module "conventional-commits-filter";
