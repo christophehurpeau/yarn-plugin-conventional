@@ -1,8 +1,8 @@
 // TODO reneable
-// import { createCheckPackage } from 'check-package-dependencies';
+import { createCheckPackage } from "check-package-dependencies";
 
-// await createCheckPackage()
-//   .checkRecommended({
-//     isLibrary: false,
-//   })
-//   .run();
+await createCheckPackage()
+  .checkRecommended({
+    isLibrary: false,
+  })
+  .run();

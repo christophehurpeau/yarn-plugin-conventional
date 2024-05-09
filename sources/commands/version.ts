@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /* eslint-disable complexity */
 /* eslint-disable unicorn/no-array-method-this-argument */
 
@@ -618,27 +617,26 @@ export default class VersionCommand extends BaseCommand {
             "Modifying versions in package.json"
           );
           // update versions
-          await Promise.all(
-            [...bumpedWorkspaces.entries()].map(
-              async ([workspace, { newVersion, dependenciesToBump }]) => {
-                workspace.manifest.version = newVersion;
 
-                for (const [
-                  dependencyType,
+          [...bumpedWorkspaces.entries()].forEach(
+            ([workspace, { newVersion, dependenciesToBump }]) => {
+              workspace.manifest.version = newVersion;
+
+              for (const [
+                dependencyType,
+                dependencyDescriptor,
+                dependencyNewRange,
+              ] of dependenciesToBump) {
+                const newDescriptor = structUtils.makeDescriptor(
                   dependencyDescriptor,
-                  dependencyNewRange,
-                ] of dependenciesToBump) {
-                  const newDescriptor = structUtils.makeDescriptor(
-                    dependencyDescriptor,
-                    dependencyNewRange
-                  );
-                  workspace.manifest[dependencyType].set(
-                    dependencyDescriptor.identHash,
-                    newDescriptor
-                  );
-                }
+                  dependencyNewRange
+                );
+                workspace.manifest[dependencyType].set(
+                  dependencyDescriptor.identHash,
+                  newDescriptor
+                );
               }
-            )
+            }
           );
 
           // Update yarn.lock ; must be done before running again lifecycle scripts
@@ -809,7 +807,7 @@ export default class VersionCommand extends BaseCommand {
 
             await Promise.all(
               [...bumpedWorkspaces.entries()].map(([workspace, { newTag }]) => {
-                if (newTag === null) return;
+                if (newTag === null) return undefined;
                 const changelog = changelogs.get(workspace);
                 if (!changelog) {
                   report.reportWarning(
@@ -818,7 +816,7 @@ export default class VersionCommand extends BaseCommand {
                       workspace
                     )}`
                   );
-                  return;
+                  return undefined;
                 }
                 return createGitRelease(
                   githubClient,

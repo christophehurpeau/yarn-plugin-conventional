@@ -1,18 +1,18 @@
-import { describe, expect, it } from "vitest";
 import { execFileSync } from "child_process";
 import { URL, fileURLToPath } from "url";
+import { describe, expect, it } from "vitest";
 
-async function executeCommand(
+function executeCommand(
   command: string,
   args: string[],
   options: {
     cwd: URL;
   }
-): Promise<{
+): {
   exitCode: number;
   stdout: string;
   stderr: string;
-}> {
+} {
   try {
     const stdout = execFileSync("yarn", [command, ...args], {
       cwd: fileURLToPath(options.cwd),
@@ -43,8 +43,8 @@ const presetOption = [
 ];
 
 describe("version", () => {
-  it("should fail if package has no version", async () => {
-    const { exitCode, stdout, stderr } = await executeCommand(
+  it("should fail if package has no version", () => {
+    const { exitCode, stdout, stderr } = executeCommand(
       "version",
       [...presetOption, "--dry-run"],
       {
@@ -58,8 +58,8 @@ describe("version", () => {
     expect(stderr).toBeFalsy();
   });
 
-  it("should fail if --prerelease is passed", async () => {
-    const { exitCode, stdout, stderr } = await executeCommand(
+  it("should fail if --prerelease is passed", () => {
+    const { exitCode, stdout, stderr } = executeCommand(
       "version",
       [...presetOption, "--prerelease=alpha", "--dry-run"],
       {
@@ -71,8 +71,8 @@ describe("version", () => {
     expect(stderr).toBeFalsy();
   });
 
-  it("should pass with dry-run and force", async () => {
-    const { exitCode, stdout, stderr } = await executeCommand(
+  it("should pass with dry-run and force", () => {
+    const { exitCode, stdout, stderr } = executeCommand(
       "version",
       [...presetOption, "--force=minor", "--dry-run"],
       {

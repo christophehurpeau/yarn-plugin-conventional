@@ -44,6 +44,11 @@
     "conventional-changelog-writer@^7.0.0": "patch:conventional-changelog-writer@npm%3A7.0.1#./.yarn/patches/conventional-changelog-writer-npm-7.0.1-7f3f5e338c.patch",
     "conventional-changelog-writer@7.0.1": "patch:conventional-changelog-writer@npm%3A7.0.1#./.yarn/patches/conventional-changelog-writer-npm-7.0.1-7f3f5e338c.patch"
   },
+  "resolutionsExplained": {
+    "conventional-changelog-core@7.0.0": "patch to avoid using dynamic require which does not bundle",
+    "conventional-changelog-writer@^7.0.0": "patch to avoid using fs which does not bundle",
+    "conventional-changelog-writer@7.0.1": "patch to avoid using fs which does not bundle"
+  },
   "dependencies": {
     "@octokit/rest": "20.0.2",
     "@yarnpkg/cli": "4.0.2",
@@ -76,7 +81,6 @@
     "@yarnpkg/builder": "4.0.0",
     "check-package-dependencies": "7.1.1",
     "eslint": "8.57.0",
-    "jest-esbuild": "0.3.0",
     "typescript": "5.4.5",
     "vitest": "1.6.0"
   }
