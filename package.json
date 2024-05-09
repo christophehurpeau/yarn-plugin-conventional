@@ -65,7 +65,7 @@
     "get-stream": "8.0.1",
     "git-raw-commits": "4.0.0",
     "git-semver-tags": "7.0.1",
-    "semver": "7.5.4",
+    "semver": "7.6.2",
     "typanion": "3.14.0"
   },
   "devDependencies": {
