@@ -6,6 +6,14 @@
   yarn berry versionning using conventional commits
 </p>
 
+# DEPRECATED
+
+Due to the lack of support of ESM in yarn plugin, lack of yarn plugin update support, as well as pain to update patches for conventional-changelog packages using fs to read files, I've move this to a regular [npm package](https://www.npmjs.com/package/yarn-version) here: https://github.com/christophehurpeau/pob/tree/main/packages/yarn-version
+
+This new version also fixes some bugs so I highly recommend the migration.
+
+# OLD README
+
 ## Install
 
 ```bash
